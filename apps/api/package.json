@@ -1,0 +1,14 @@
+{
+  "name": "@net-worth-tracker/api",
+  "version": "0.0.1",
+  "description": "API for net worth tracker",
+  "main": "index.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "Abdirahman Haji",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "dependencies": {
+    "hono": "^4.8.4"
+  }
+}

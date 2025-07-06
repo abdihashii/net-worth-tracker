@@ -1,0 +1,13 @@
+{
+  "name": "net-worth-tracker",
+  "version": "0.0.1",
+  "description": "A net worth tracker app",
+  "keywords": [],
+  "author": "Abdirahman Haji",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "typescript": "^5.8.3"
+  }
+}

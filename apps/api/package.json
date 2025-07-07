@@ -9,6 +9,10 @@
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
-    "hono": "^4.8.4"
+    "hono": "^4.8.4",
+    "plaid": "^36.0.0"
+  },
+  "devDependencies": {
+    "dotenv": "^17.0.1"
   }
 }

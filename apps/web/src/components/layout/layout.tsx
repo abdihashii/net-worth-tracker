@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/layout/app-sidebar";
+import { ModeToggle } from "@/components/layout/theme-toggle";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -40,6 +41,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </BreadcrumbList>
             </Breadcrumb>
           </div>
+          <ModeToggle />
         </header>
         <main className="flex-1 pt-0 p-4">{children}</main>
       </SidebarInset>

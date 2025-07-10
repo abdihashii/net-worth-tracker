@@ -8,6 +8,8 @@ import {
 import type { ReactNode } from "react";
 
 import Layout from "@/components/layout/layout";
+import { ThemeProvider, useTheme } from "@/components/providers/theme-provider";
+import { getThemeServerFn } from "@/lib/theme";
 import appCss from "@/styles/app.css?url";
 
 export const Route = createRootRoute({
@@ -32,19 +34,26 @@ export const Route = createRootRoute({
     ],
   }),
   component: RootComponent,
+  loader: () => getThemeServerFn(),
 });
 
 function RootComponent() {
+  const data = Route.useLoaderData();
+
   return (
-    <RootDocument>
-      <Outlet />
-    </RootDocument>
+    <ThemeProvider theme={data}>
+      <RootDocument>
+        <Outlet />
+      </RootDocument>
+    </ThemeProvider>
   );
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const { theme } = useTheme();
+
   return (
-    <html>
+    <html className={theme} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

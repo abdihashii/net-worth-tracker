@@ -1,4 +1,12 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+  FileDown,
+  Home,
+  PlusCircle,
+  Settings,
+  TrendingDown,
+  TrendingUp,
+  Wallet,
+} from "lucide-react";
 
 import {
   Sidebar,
@@ -14,28 +22,38 @@ import {
 // Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
+    title: "Dashboard",
+    url: "/",
     icon: Home,
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Net Worth",
+    url: "/net-worth",
+    icon: Wallet,
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Assets",
+    url: "/assets",
+    icon: TrendingUp,
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Liabilities",
+    url: "/liabilities",
+    icon: TrendingDown,
+  },
+  {
+    title: "Add Account",
+    url: "/accounts/add",
+    icon: PlusCircle,
+  },
+  {
+    title: "Export Data",
+    url: "/export",
+    icon: FileDown,
   },
   {
     title: "Settings",
-    url: "#",
+    url: "/settings",
     icon: Settings,
   },
 ];

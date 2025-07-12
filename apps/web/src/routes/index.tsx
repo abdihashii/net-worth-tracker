@@ -17,6 +17,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import {
+  formatCurrency,
+  getAccountIcon,
+  sortAccountsByCategory,
+} from "@/lib/account-utils";
+import mockData from "@/lib/mock-data";
+import {
+  AccountCategory,
+  AccountListItem,
+  AccountType,
+} from "@net-worth-tracker/shared-types";
 
 export const Route = createFileRoute("/")({
   component: Dashboard,
@@ -26,93 +37,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Dashboard() {
-  // Mock data - will be replaced with real data from API
-  const netWorth = 125000;
-  const netWorthChange = 12.5;
-  const totalAssets = 180000;
-  const totalLiabilities = 55000;
-  const lastUpdated = new Date().toLocaleString();
+  // Get mock data from the centralized mock data file
+  const { netWorthSummary, accountListItems } = mockData;
 
-  const accounts = [
-    {
-      id: 1,
-      name: "Chase Checking",
-      type: "Cash",
-      balance: 12500,
-      institution: "Chase",
-    },
-    {
-      id: 2,
-      name: "Chase Savings",
-      type: "Cash",
-      balance: 25000,
-      institution: "Chase",
-    },
-    {
-      id: 3,
-      name: "Schwab Brokerage",
-      type: "Investment",
-      balance: 85000,
-      institution: "Charles Schwab",
-    },
-    {
-      id: 4,
-      name: "Vanguard IRA",
-      type: "Investment",
-      balance: 42500,
-      institution: "Vanguard",
-    },
-    {
-      id: 5,
-      name: "Chase Sapphire",
-      type: "Credit Card",
-      balance: -2500,
-      institution: "Chase",
-    },
-    {
-      id: 6,
-      name: "Auto Loan",
-      type: "Loan",
-      balance: -15000,
-      institution: "Toyota Financial",
-    },
-    {
-      id: 7,
-      name: "Home (Manual)",
-      type: "Property",
-      balance: 350000,
-      institution: "Manual Entry",
-    },
-    {
-      id: 8,
-      name: "2022 Toyota Camry",
-      type: "Vehicle",
-      balance: 28000,
-      institution: "Manual Entry",
-    },
-  ];
+  // Sort accounts by category for better display - convert to proper format first
+  const accountsWithTypedCategories = accountListItems.map((item) => ({
+    ...item,
+    category: item.category as AccountCategory,
+  }));
+  const sortedAccounts = sortAccountsByCategory(accountsWithTypedCategories);
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+  // Calculate display values
+  const netWorth = netWorthSummary.currentNetWorth;
+  const netWorthChange = netWorthSummary.changeFromPrevious?.percentage || 0;
+  const totalAssets = netWorthSummary.totalAssets;
+  const totalLiabilities = netWorthSummary.totalLiabilities;
+  const lastUpdated = netWorthSummary.lastUpdated.toLocaleString();
+
+  const renderAccountIcon = (account: AccountListItem) => {
+    const IconComponent = getAccountIcon(
+      account.type as AccountType,
+      account.subtype
+    );
+    return <IconComponent className="h-4 w-4" />;
   };
 
-  const getAccountIcon = (type: string) => {
-    switch (type) {
-      case "Cash":
-        return <Wallet className="h-4 w-4" />;
-      case "Investment":
-        return <TrendingUp className="h-4 w-4" />;
-      case "Credit Card":
-      case "Loan":
-        return <TrendingDown className="h-4 w-4" />;
-      default:
-        return <Wallet className="h-4 w-4" />;
-    }
+  const getAccountDisplayBalance = (account: AccountListItem) => {
+    // For liabilities, show as negative in the UI
+    const isLiability = account.type === "credit" || account.type === "loan";
+    return isLiability ? -account.balance : account.balance;
   };
 
   return (
@@ -205,31 +158,37 @@ function Dashboard() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {accounts.map((account) => (
-              <div
-                key={account.id}
-                className="flex items-center justify-between py-2 border-b last:border-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-muted rounded-md">
-                    {getAccountIcon(account.type)}
-                  </div>
-                  <div>
-                    <p className="font-medium">{account.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {account.institution} • {account.type}
-                    </p>
-                  </div>
-                </div>
+            {sortedAccounts.map((account) => {
+              const displayBalance = getAccountDisplayBalance(account);
+              const isNegative = displayBalance < 0;
+
+              return (
                 <div
-                  className={`text-right font-medium ${
-                    account.balance < 0 ? "text-red-600" : ""
-                  }`}
+                  key={account.id}
+                  className="flex items-center justify-between py-2 border-b last:border-0"
                 >
-                  {formatCurrency(Math.abs(account.balance))}
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-muted rounded-md">
+                      {renderAccountIcon(account)}
+                    </div>
+                    <div>
+                      <p className="font-medium">{account.name}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {account.institutionName} • {account.subtype}
+                        {account.mask && ` ••••${account.mask}`}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className={`text-right font-medium ${
+                      isNegative ? "text-red-600" : ""
+                    }`}
+                  >
+                    {formatCurrency(Math.abs(displayBalance))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       </Card>

@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@tailwindcss/postcss": "^4.1.11",
+    "@tanstack/react-query": "^5.83.0",
     "@tanstack/react-router": "^1.125.6",
     "@tanstack/react-start": "^1.125.6",
     "class-variance-authority": "^0.7.1",
@@ -34,6 +35,7 @@
     "vite": "^7.0.3"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.81.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "tw-animate-css": "^1.3.5",

@@ -170,24 +170,6 @@ export const mockAccountBalances: AccountBalance[] = [
     createdAt: getCurrentDate(),
   },
   {
-    id: "bal-10",
-    accountId: "acc-10",
-    balance: 15000,
-    date: getCurrentDate(),
-    isCurrent: true,
-    source: "manual",
-    createdAt: getCurrentDate(),
-  },
-  {
-    id: "bal-11",
-    accountId: "acc-11",
-    balance: 11000,
-    date: getCurrentDate(),
-    isCurrent: true,
-    source: "manual",
-    createdAt: getCurrentDate(),
-  },
-  {
     id: "bal-12",
     accountId: "acc-12",
     balance: 16000,
@@ -224,11 +206,29 @@ export const mockAccountBalances: AccountBalance[] = [
     source: "manual",
     createdAt: getCurrentDate(),
   },
-  // Solana Wallet - Current Balances
+  // Solana Wallets - Current Balances
+  {
+    id: "bal-14",
+    accountId: "acc-16",
+    balance: 8400, // ~150 SOL at $56/SOL
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-15",
+    accountId: "acc-17",
+    balance: 25000, // USDC stablecoin holdings
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
   {
     id: "bal-16",
-    accountId: "acc-16",
-    balance: 12000,
+    accountId: "acc-18",
+    balance: 12000, // DeFi token portfolio (JUP, RAY, ORCA)
     date: getCurrentDate(),
     isCurrent: true,
     source: "solana_rpc",
@@ -236,8 +236,8 @@ export const mockAccountBalances: AccountBalance[] = [
   },
   {
     id: "bal-17",
-    accountId: "acc-17",
-    balance: 8500,
+    accountId: "acc-19",
+    balance: 18500, // Blue chip NFT collection (DeGods, y00ts)
     date: getCurrentDate(),
     isCurrent: true,
     source: "solana_rpc",
@@ -245,8 +245,35 @@ export const mockAccountBalances: AccountBalance[] = [
   },
   {
     id: "bal-18",
-    accountId: "acc-18",
-    balance: 15000,
+    accountId: "acc-20",
+    balance: 4200, // Memecoin portfolio (BONK, WIF, POPCAT)
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-19",
+    accountId: "acc-21",
+    balance: 32000, // Gaming ecosystem (ATLAS, Genopets NFTs)
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-20",
+    accountId: "acc-22",
+    balance: 7800, // Art NFT collection (Mad Lads, Okay Bears)
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-21",
+    accountId: "acc-23",
+    balance: 15600, // Mixed SOL + SPL portfolio
     date: getCurrentDate(),
     isCurrent: true,
     source: "solana_rpc",
@@ -339,24 +366,6 @@ export const mockAccountBalances: AccountBalance[] = [
     createdAt: oneMonthAgo,
   },
   {
-    id: "bal-10-monthly",
-    accountId: "acc-10",
-    balance: 13500, // Ethereum was lower
-    date: oneMonthAgo,
-    isCurrent: false,
-    source: "manual",
-    createdAt: oneMonthAgo,
-  },
-  {
-    id: "bal-11-monthly",
-    accountId: "acc-11",
-    balance: 8000, // NFTs had a surge
-    date: oneMonthAgo,
-    isCurrent: false,
-    source: "manual",
-    createdAt: oneMonthAgo,
-  },
-  {
     id: "bal-12-monthly",
     accountId: "acc-12",
     balance: 15800, // RWA steady growth
@@ -393,11 +402,29 @@ export const mockAccountBalances: AccountBalance[] = [
     source: "manual",
     createdAt: oneMonthAgo,
   },
-  // Solana Wallet - One Month Ago (higher volatility)
+  // Solana Wallets - One Month Ago (crypto volatility)
+  {
+    id: "bal-14-monthly",
+    accountId: "acc-16",
+    balance: 7200, // SOL was ~$48/SOL (150 SOL)
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-15-monthly",
+    accountId: "acc-17",
+    balance: 25000, // USDC stable
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
   {
     id: "bal-16-monthly",
-    accountId: "acc-16",
-    balance: 10500, // SOL was lower
+    accountId: "acc-18",
+    balance: 9800, // DeFi tokens down
     date: oneMonthAgo,
     isCurrent: false,
     source: "solana_rpc",
@@ -405,8 +432,8 @@ export const mockAccountBalances: AccountBalance[] = [
   },
   {
     id: "bal-17-monthly",
-    accountId: "acc-17",
-    balance: 7200, // SPL tokens varied
+    accountId: "acc-19",
+    balance: 21000, // NFTs were higher
     date: oneMonthAgo,
     isCurrent: false,
     source: "solana_rpc",
@@ -414,8 +441,35 @@ export const mockAccountBalances: AccountBalance[] = [
   },
   {
     id: "bal-18-monthly",
-    accountId: "acc-18",
-    balance: 18000, // NFTs had different values
+    accountId: "acc-20",
+    balance: 6800, // Memecoins had rally
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-19-monthly",
+    accountId: "acc-21",
+    balance: 28000, // Gaming tokens down
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-20-monthly",
+    accountId: "acc-22",
+    balance: 9200, // Art NFTs higher
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-21-monthly",
+    accountId: "acc-23",
+    balance: 13400, // Mixed portfolio down
     date: oneMonthAgo,
     isCurrent: false,
     source: "solana_rpc",
@@ -615,54 +669,6 @@ export const mockAccounts: Account[] = [
     updatedAt: getCurrentDate(),
   },
   {
-    id: "acc-10",
-    userId: MOCK_USER_ID,
-    name: "Ethereum Holdings",
-    type: ACCOUNT_TYPES.MANUAL_ASSET,
-    subtype: "ethereum",
-    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
-    isManual: true,
-    isActive: true,
-    institutionName: "Coinbase Pro",
-    currency: "USD",
-    currentBalance: mockAccountBalances[9],
-    manualAssetDetails: {
-      id: "asset-4",
-      accountId: "acc-10",
-      userId: MOCK_USER_ID,
-      description: "Ethereum (ETH) - 6.2 ETH @ ~$2,420",
-      notes: "Smart contract platform, DeFi ecosystem exposure",
-      createdAt: oneYearAgo,
-      updatedAt: getCurrentDate(),
-    },
-    createdAt: oneYearAgo,
-    updatedAt: getCurrentDate(),
-  },
-  {
-    id: "acc-11",
-    userId: MOCK_USER_ID,
-    name: "NFT Collection",
-    type: ACCOUNT_TYPES.MANUAL_ASSET,
-    subtype: "nft",
-    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
-    isManual: true,
-    isActive: true,
-    institutionName: "OpenSea",
-    currency: "USD",
-    currentBalance: mockAccountBalances[10],
-    manualAssetDetails: {
-      id: "asset-5",
-      accountId: "acc-11",
-      userId: MOCK_USER_ID,
-      description: "Digital art & utility NFTs - 8 pieces",
-      notes: "Blue-chip: CryptoPunks, Bored Apes; Utility: Gaming assets",
-      createdAt: oneYearAgo,
-      updatedAt: getCurrentDate(),
-    },
-    createdAt: oneYearAgo,
-    updatedAt: getCurrentDate(),
-  },
-  {
     id: "acc-12",
     userId: MOCK_USER_ID,
     name: "RWA Tokens",
@@ -673,7 +679,7 @@ export const mockAccounts: Account[] = [
     isActive: true,
     institutionName: "RealT / Ondo",
     currency: "USD",
-    currentBalance: mockAccountBalances[11],
+    currentBalance: mockAccountBalances[9],
     manualAssetDetails: {
       id: "asset-6",
       accountId: "acc-12",
@@ -698,7 +704,7 @@ export const mockAccounts: Account[] = [
     isActive: true,
     institutionName: "APMEX Vault",
     currency: "USD",
-    currentBalance: mockAccountBalances[12],
+    currentBalance: mockAccountBalances[10],
     manualAssetDetails: {
       id: "asset-7",
       accountId: "acc-13",
@@ -722,7 +728,7 @@ export const mockAccounts: Account[] = [
     isActive: true,
     institutionName: "Local Coin Shop",
     currency: "USD",
-    currentBalance: mockAccountBalances[13],
+    currentBalance: mockAccountBalances[11],
     manualAssetDetails: {
       id: "asset-8",
       accountId: "acc-14",
@@ -746,7 +752,7 @@ export const mockAccounts: Account[] = [
     isActive: true,
     institutionName: "Schwab Brokerage",
     currency: "USD",
-    currentBalance: mockAccountBalances[14],
+    currentBalance: mockAccountBalances[12],
     manualAssetDetails: {
       id: "asset-9",
       accountId: "acc-15",
@@ -759,27 +765,27 @@ export const mockAccounts: Account[] = [
     createdAt: oneYearAgo,
     updatedAt: getCurrentDate(),
   },
-  // Solana Wallets
+  // Solana Wallets - Diverse addresses and holdings
   {
     id: "acc-16",
     userId: MOCK_USER_ID,
-    name: "Main Solana Wallet",
+    name: "SOL Holdings",
     type: ACCOUNT_TYPES.SOLANA_WALLET,
     subtype: "solana",
     category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
     isManual: false,
     isActive: true,
-    institutionName: "Phantom Wallet",
+    institutionName: "Connected Wallet",
     currency: "USD",
-    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-16"),
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-14"),
     solanaWalletDetails: {
       id: "solana-1",
       accountId: "acc-16",
       userId: MOCK_USER_ID,
-      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      address: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
       network: "mainnet-beta",
-      name: "Main Wallet",
-      description: "Primary Solana wallet with SOL and various tokens",
+      name: "Primary SOL Wallet",
+      description: "150 SOL tokens - main Solana holdings",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -789,23 +795,23 @@ export const mockAccounts: Account[] = [
   {
     id: "acc-17",
     userId: MOCK_USER_ID,
-    name: "USDC Holdings",
+    name: "USDC Stablecoin",
     type: ACCOUNT_TYPES.SOLANA_WALLET,
     subtype: "spl_token",
     category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
     isManual: false,
     isActive: true,
-    institutionName: "Phantom Wallet",
+    institutionName: "Connected Wallet",
     currency: "USD",
-    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-17"),
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-15"),
     solanaWalletDetails: {
       id: "solana-2",
       accountId: "acc-17",
       userId: MOCK_USER_ID,
-      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      address: "4YrKGvXs1pNvzAD6ZGhcdJQqZKz1grSvnrDkJp5TH7Ub",
       network: "mainnet-beta",
-      name: "USDC Token Account",
-      description: "USD Coin (USDC) SPL token holdings",
+      name: "USDC Holdings",
+      description: "25,000 USDC stablecoin reserves",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -815,24 +821,153 @@ export const mockAccounts: Account[] = [
   {
     id: "acc-18",
     userId: MOCK_USER_ID,
-    name: "Solana NFT Collection",
+    name: "DeFi Token Portfolio",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "spl_token",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Connected Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-16"),
+    solanaWalletDetails: {
+      id: "solana-3",
+      accountId: "acc-18",
+      userId: MOCK_USER_ID,
+      address: "8sRT1Mc3Tm6xqpqEMmxcuUWP5YZxAT8ZqhHD7KP4TQvB",
+      network: "mainnet-beta",
+      name: "DeFi Tokens",
+      description: "JUP, RAY, ORCA, SRM - DeFi ecosystem tokens",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-19",
+    userId: MOCK_USER_ID,
+    name: "Blue Chip NFTs",
     type: ACCOUNT_TYPES.SOLANA_WALLET,
     subtype: "solana_nft",
     category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
     isManual: false,
     isActive: true,
-    institutionName: "Magic Eden",
+    institutionName: "Connected Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-17"),
+    solanaWalletDetails: {
+      id: "solana-4",
+      accountId: "acc-19",
+      userId: MOCK_USER_ID,
+      address: "6ZkHgx4FY8qWdh7PHj3L2C8NBTMH3GFQK5nGzQk9JvYH",
+      network: "mainnet-beta",
+      name: "Premium NFT Collection",
+      description: "DeGods #2847, y00ts #1523, SMB Gen2 #4891",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-20",
+    userId: MOCK_USER_ID,
+    name: "Memecoin Portfolio",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "spl_token",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Connected Wallet",
     currency: "USD",
     currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-18"),
     solanaWalletDetails: {
-      id: "solana-3",
-      accountId: "acc-18",
+      id: "solana-5",
+      accountId: "acc-20",
       userId: MOCK_USER_ID,
-      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      address: "3Nv5rLf9nPQQs8F3X7sJ2e1ZKFT5HbY9Q4mhA6pR8vGq",
       network: "mainnet-beta",
-      name: "NFT Collection",
-      description:
-        "Various Solana NFTs including DeGods, y00ts, and art pieces",
+      name: "Meme Token Collection",
+      description: "BONK, WIF, POPCAT, MYRO - memecoin plays",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-21",
+    userId: MOCK_USER_ID,
+    name: "Gaming Ecosystem",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "solana_nft",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Connected Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-19"),
+    solanaWalletDetails: {
+      id: "solana-6",
+      accountId: "acc-21",
+      userId: MOCK_USER_ID,
+      address: "7qX8w4E3h9NjKqbYvZHc1R5g6A2sFm9LtKp3Dz8VvYhT",
+      network: "mainnet-beta",
+      name: "Gaming Assets",
+      description: "Star Atlas ships, Genopets #2341, ATLAS tokens",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-22",
+    userId: MOCK_USER_ID,
+    name: "Art NFT Collection",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "solana_nft",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Connected Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-20"),
+    solanaWalletDetails: {
+      id: "solana-7",
+      accountId: "acc-22",
+      userId: MOCK_USER_ID,
+      address: "2bGH7YfxM9Ck5VzBqPw8T6uR3hJd1eN4LpQ7SxZmK9wF",
+      network: "mainnet-beta",
+      name: "Digital Art",
+      description: "Mad Lads #892, Okay Bears #3456, Famous Fox #1234",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-23",
+    userId: MOCK_USER_ID,
+    name: "Mixed Portfolio",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "solana",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Connected Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-21"),
+    solanaWalletDetails: {
+      id: "solana-8",
+      accountId: "acc-23",
+      userId: MOCK_USER_ID,
+      address: "5Xp9W3mBz7Ck2Hq8fG4vR6uY1eT3Nz9LdS2aQxVbKmJh",
+      network: "mainnet-beta",
+      name: "Diversified Holdings",
+      description: "SOL + SPL tokens: USDT, JTO, PYTH, HNT",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -1302,50 +1437,6 @@ export const getMockAssetPerformance = () => {
         benchmark: point.netWorth * 0.95, // Benchmark vs crypto index
       };
     }),
-    ethereum: generateRealisticHistory(
-      startDate,
-      currentDate,
-      "monthly",
-      15000
-    ).map((point, index) => {
-      const rng = createSeededRandom(point.date);
-      const extraVolatility = rng.normal(0, 0.18); // Even higher volatility for ETH
-      const defiCycle = Math.cos((index / 12) * 3 * Math.PI) * 0.08; // DeFi boom/bust cycles
-
-      return {
-        ...point,
-        netWorth: Math.round(
-          point.netWorth * (1 + extraVolatility + defiCycle)
-        ),
-        totalAssets: Math.round(
-          point.totalAssets * (1 + extraVolatility + defiCycle)
-        ),
-        assetType: "ethereum",
-        benchmark: point.netWorth * 0.92, // More volatile than BTC
-      };
-    }),
-    nfts: generateRealisticHistory(
-      startDate,
-      currentDate,
-      "monthly",
-      11000
-    ).map((point, index) => {
-      const rng = createSeededRandom(point.date);
-      const extremeVolatility = rng.normal(0, 0.25); // Extreme volatility for NFTs
-      const hypeBooms = index % 4 === 0 ? 0.3 : 0; // Occasional hype booms
-
-      return {
-        ...point,
-        netWorth: Math.round(
-          point.netWorth * (1 + extremeVolatility + hypeBooms)
-        ),
-        totalAssets: Math.round(
-          point.totalAssets * (1 + extremeVolatility + hypeBooms)
-        ),
-        assetType: "nfts",
-        benchmark: point.netWorth * 0.85, // Very speculative
-      };
-    }),
     gold: generateRealisticHistory(
       startDate,
       currentDate,
@@ -1412,46 +1503,137 @@ export const getMockAssetPerformance = () => {
         benchmark: point.netWorth * 0.9, // More volatile than BTC
       };
     }),
-    splTokens: generateRealisticHistory(
+    // DeFi SPL Tokens (JUP, RAY, ORCA)
+    splTokensDeFi: generateRealisticHistory(
       startDate,
       currentDate,
       "monthly",
-      8500
+      12000
     ).map((point, index) => {
       const rng = createSeededRandom(point.date);
-      const tokenVolatility = rng.normal(0, 0.15); // Moderate volatility for SPL tokens
-      const defiCycles = Math.sin((index / 12) * 2.5 * Math.PI) * 0.08;
+      const defiVolatility = rng.normal(0, 0.18); // High volatility for DeFi
+      const jupiterCycle = Math.cos((index / 12) * 3 * Math.PI) * 0.15; // Jupiter ecosystem growth
 
       return {
         ...point,
         netWorth: Math.round(
-          point.netWorth * (1 + tokenVolatility + defiCycles)
+          point.netWorth * (1 + defiVolatility + jupiterCycle)
         ),
         totalAssets: Math.round(
-          point.totalAssets * (1 + tokenVolatility + defiCycles)
+          point.totalAssets * (1 + defiVolatility + jupiterCycle)
         ),
-        assetType: "splTokens",
-        benchmark: point.netWorth * 0.94, // Tracking various SPL token indices
+        assetType: "splTokensDeFi",
+        benchmark: point.netWorth * 0.92, // DeFi sector benchmark
       };
     }),
-    solanaNFTs: generateRealisticHistory(
+    // Stablecoins (USDC, USDT)
+    stablecoins: generateRealisticHistory(
       startDate,
       currentDate,
       "monthly",
-      15000
-    ).map((point, index) => {
+      25000
+    ).map((point) => {
       const rng = createSeededRandom(point.date);
-      const nftVolatility = rng.normal(0, 0.3); // Extreme volatility for NFTs
-      const hypeCycles = index % 3 === 0 ? 0.25 : 0; // Occasional hype spikes
+      const stableVolatility = rng.normal(0, 0.005); // Very low volatility
 
       return {
         ...point,
-        netWorth: Math.round(point.netWorth * (1 + nftVolatility + hypeCycles)),
-        totalAssets: Math.round(
-          point.totalAssets * (1 + nftVolatility + hypeCycles)
+        netWorth: Math.round(point.netWorth * (1 + stableVolatility)),
+        totalAssets: Math.round(point.totalAssets * (1 + stableVolatility)),
+        assetType: "stablecoins",
+        benchmark: point.netWorth, // No benchmark for stables
+      };
+    }),
+    // Memecoins (BONK, WIF, POPCAT)
+    memecoins: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      4200
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const memeVolatility = rng.normal(0, 0.35); // Extreme volatility
+      const viralCycles = index % 2 === 0 ? 0.5 : -0.2; // Viral pump/dump cycles
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + memeVolatility + viralCycles)
         ),
-        assetType: "solanaNFTs",
-        benchmark: point.netWorth * 0.8, // Very speculative asset class
+        totalAssets: Math.round(
+          point.totalAssets * (1 + memeVolatility + viralCycles)
+        ),
+        assetType: "memecoins",
+        benchmark: point.netWorth * 0.75, // Very speculative benchmark
+      };
+    }),
+    // Blue Chip NFTs (DeGods, y00ts)
+    blueChipNFTs: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      18500
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const blueChipVolatility = rng.normal(0, 0.25); // High but less extreme than other NFTs
+      const utilityAdoption = Math.log(index + 2) * 0.02; // Gradual utility increase
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + blueChipVolatility + utilityAdoption)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + blueChipVolatility + utilityAdoption)
+        ),
+        assetType: "blueChipNFTs",
+        benchmark: point.netWorth * 0.85, // Blue chip NFT sector
+      };
+    }),
+    // Gaming NFTs (Star Atlas, Genopets)
+    gamingNFTs: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      32000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const gamingVolatility = rng.normal(0, 0.28); // Gaming sector volatility
+      const metaverseTrends = Math.sin((index / 12) * 4 * Math.PI) * 0.12; // Gaming hype cycles
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + gamingVolatility + metaverseTrends)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + gamingVolatility + metaverseTrends)
+        ),
+        assetType: "gamingNFTs",
+        benchmark: point.netWorth * 0.78, // Gaming NFT sector
+      };
+    }),
+    // Art NFTs (Mad Lads, Okay Bears)
+    artNFTs: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      7800
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const artVolatility = rng.normal(0, 0.32); // Art market volatility
+      const culturalTrends = index % 4 === 0 ? 0.2 : -0.05; // Cultural adoption waves
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + artVolatility + culturalTrends)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + artVolatility + culturalTrends)
+        ),
+        assetType: "artNFTs",
+        benchmark: point.netWorth * 0.82, // Digital art market
       };
     }),
   };
@@ -1466,21 +1648,23 @@ export const mockAssetPerformance = getMockAssetPerformance();
  * Enhanced trend analysis with realistic insights
  */
 export const mockTrendAnalysis = {
-  monthlyGrowthRate: 2.8,
-  yearOverYearGrowth: 15.7,
-  volatility: "moderate",
+  monthlyGrowthRate: 3.2,
+  yearOverYearGrowth: 18.4,
+  volatility: "high",
   trend: "upward",
-  bestPerformingAsset: "Real Estate",
-  worstPerformingAsset: "Cash",
+  bestPerformingAsset: "Gaming NFTs",
+  worstPerformingAsset: "Stablecoins",
   averageMonthlyContribution: 1000,
   projectedBreakeven: null,
-  riskScore: 6.2, // out of 10
-  diversificationScore: 8.1, // out of 10
+  riskScore: 7.8, // out of 10 (higher due to crypto exposure)
+  diversificationScore: 8.6, // out of 10 (good spread across asset types)
   insights: [
-    "Your net worth has grown consistently over the past 12 months",
-    "Real estate represents 44% of your portfolio - consider diversifying",
-    "Your investment returns are tracking 2% below market benchmarks",
-    "Emergency fund covers 3.2 months of expenses - consider increasing to 6 months",
+    "Your Solana ecosystem investments have outperformed traditional assets",
+    "DeFi tokens show strong correlation with Jupiter ecosystem growth",
+    "Gaming NFTs are your highest-performing asset class with 45% gains",
+    "Consider taking profits from memecoin positions - they're up 180%",
+    "Stablecoin reserves provide good stability anchor for volatile crypto portfolio",
+    "Your Solana wallet diversification reduces single-point-of-failure risk",
   ],
 };
 
@@ -1617,6 +1801,302 @@ export function getMockUserData(userId: string = MOCK_USER_ID) {
 /**
  * Default export for easy importing
  */
+/**
+ * Mock Solana token metadata for realistic SPL token holdings
+ */
+export const mockSolanaTokens = {
+  // Stablecoins
+  USDC: {
+    mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    symbol: "USDC",
+    name: "USD Coin",
+    decimals: 6,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png",
+    currentPrice: 1.0,
+    priceChange24h: 0.001,
+  },
+  USDT: {
+    mint: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+    symbol: "USDT",
+    name: "Tether USD",
+    decimals: 6,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.svg",
+    currentPrice: 0.999,
+    priceChange24h: -0.002,
+  },
+  // DeFi Tokens
+  JUP: {
+    mint: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+    symbol: "JUP",
+    name: "Jupiter",
+    decimals: 6,
+    logoUri: "https://static.jup.ag/jup/icon.png",
+    currentPrice: 0.78,
+    priceChange24h: 5.2,
+  },
+  RAY: {
+    mint: "4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R",
+    symbol: "RAY",
+    name: "Raydium",
+    decimals: 6,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R/logo.png",
+    currentPrice: 1.85,
+    priceChange24h: -2.1,
+  },
+  ORCA: {
+    mint: "orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE",
+    symbol: "ORCA",
+    name: "Orca",
+    decimals: 6,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/orcaEKTdK7LKz57vaAYr9QeNsVEPfiu6QeMU1kektZE/logo.png",
+    currentPrice: 3.45,
+    priceChange24h: 8.7,
+  },
+  // Memecoins
+  BONK: {
+    mint: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    symbol: "BONK",
+    name: "Bonk",
+    decimals: 5,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263/logo.png",
+    currentPrice: 0.000024,
+    priceChange24h: 12.3,
+  },
+  WIF: {
+    mint: "EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm",
+    symbol: "WIF",
+    name: "dogwifhat",
+    decimals: 6,
+    logoUri:
+      "https://bafkreibk3covs5ltyqxa272mpgm22kv4c2pklxtcnw7m7ba7w6lqscn3c4.ipfs.dweb.link/",
+    currentPrice: 1.92,
+    priceChange24h: -5.4,
+  },
+  POPCAT: {
+    mint: "7GCihgDB8fe6KNjn2MYtkzZcRjQy3t9GHdC8uHYmW2hr",
+    symbol: "POPCAT",
+    name: "Popcat",
+    decimals: 9,
+    logoUri:
+      "https://assets.coingecko.com/coins/images/30419/standard/popcat.png",
+    currentPrice: 0.86,
+    priceChange24h: 18.5,
+  },
+  // Gaming
+  ATLAS: {
+    mint: "ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx",
+    symbol: "ATLAS",
+    name: "Star Atlas",
+    decimals: 8,
+    logoUri:
+      "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/ATLASXmbPQxBUYbxPsV97usA3fPQYEqzQBUHgiFCUsXx/logo.png",
+    currentPrice: 0.0034,
+    priceChange24h: -1.2,
+  },
+};
+
+/**
+ * Mock Solana NFT collections with realistic floor prices and metadata
+ */
+export const mockSolanaNFTs = {
+  // Blue Chip Collections
+  DeGods: {
+    collectionId: "degods",
+    name: "DeGods",
+    symbol: "DEGODS",
+    floorPrice: 14.5, // SOL
+    totalSupply: 10000,
+    verified: true,
+    image:
+      "https://creator-hub-prod.s3.us-east-2.amazonaws.com/degods_pfp_1656558927467.png",
+    description:
+      "DeGods is a digital art collection and global community of creators, builders, and makers.",
+  },
+  y00ts: {
+    collectionId: "y00ts",
+    name: "y00ts",
+    symbol: "Y00TS",
+    floorPrice: 8.2, // SOL
+    totalSupply: 15000,
+    verified: true,
+    image:
+      "https://creator-hub-prod.s3.us-east-2.amazonaws.com/y00ts_pfp_1660349505032.gif",
+    description:
+      "y00ts is a generative art project and community DAO on Solana.",
+  },
+  // Art Collections
+  MadLads: {
+    collectionId: "madlads",
+    name: "Mad Lads",
+    symbol: "MADLADS",
+    floorPrice: 25.8, // SOL
+    totalSupply: 10000,
+    verified: true,
+    image: "https://madlads.s3.us-west-2.amazonaws.com/images/1.png",
+    description: "Mad Lads by Coral Cube - a collection of 10,000 Mad Lads.",
+  },
+  OkayBears: {
+    collectionId: "okaybears",
+    name: "Okay Bears",
+    symbol: "OKAYBEARS",
+    floorPrice: 4.1, // SOL
+    totalSupply: 10000,
+    verified: true,
+    image:
+      "https://bafybeihvvuqhdpjpsrxstnyj7rlcvzrjsfywwpuqovbcxdpra5nh6dwyc4.ipfs.dweb.link/6999.png",
+    description: "Okay Bears is a culture club for the grown and sexy.",
+  },
+  // Gaming NFTs
+  StarAtlas: {
+    collectionId: "staratlas",
+    name: "Star Atlas Ships",
+    symbol: "STASHIPS",
+    floorPrice: 12.3, // SOL
+    totalSupply: 22500,
+    verified: true,
+    image:
+      "https://storage.googleapis.com/fractal-launchpad-public-assets/staratlas/Pearce_C11.png",
+    description: "Spaceships from the Star Atlas metaverse gaming ecosystem.",
+  },
+  Genopets: {
+    collectionId: "genopets",
+    name: "Genopets",
+    symbol: "GENOPETS",
+    floorPrice: 3.7, // SOL
+    totalSupply: 3333,
+    verified: true,
+    image:
+      "https://www.arweave.net/7u4xMpJhZaQZS3uKNP8UQ8gLa6Q6W2UQH3W8Q7kZ6y8",
+    description:
+      "Genopets are evolving NFT creatures that level up through daily activity.",
+  },
+};
+
+/**
+ * Calculate detailed token holdings for each wallet
+ */
+export const mockSolanaTokenHoldings = {
+  // USDC Wallet (acc-15)
+  "4YrKGvXs1pNvzAD6ZGhcdJQqZKz1grSvnrDkJp5TH7Ub": [
+    { token: mockSolanaTokens.USDC, amount: 25000, value: 25000 },
+  ],
+  // DeFi Portfolio (acc-16)
+  "8sRT1Mc3Tm6xqpqEMmxcuUWP5YZxAT8ZqhHD7KP4TQvB": [
+    { token: mockSolanaTokens.JUP, amount: 5000, value: 3900 },
+    { token: mockSolanaTokens.RAY, amount: 2500, value: 4625 },
+    { token: mockSolanaTokens.ORCA, amount: 1000, value: 3450 },
+  ],
+  // Memecoin Portfolio (acc-18)
+  "3Nv5rLf9nPQQs8F3X7sJ2e1ZKFT5HbY9Q4mhA6pR8vGq": [
+    { token: mockSolanaTokens.BONK, amount: 50000000, value: 1200 },
+    { token: mockSolanaTokens.WIF, amount: 800, value: 1536 },
+    { token: mockSolanaTokens.POPCAT, amount: 1600, value: 1376 },
+  ],
+  // Mixed Portfolio (acc-21)
+  "5Xp9W3mBz7Ck2Hq8fG4vR6uY1eT3Nz9LdS2aQxVbKmJh": [
+    { token: mockSolanaTokens.USDT, amount: 8000, value: 7992 },
+    { token: mockSolanaTokens.ATLAS, amount: 1000000, value: 3400 },
+    { token: mockSolanaTokens.JUP, amount: 2000, value: 1560 },
+  ],
+};
+
+/**
+ * Calculate detailed NFT holdings for each wallet
+ */
+export const mockSolanaNFTHoldings = {
+  // Blue Chip NFTs (acc-17)
+  "6ZkHgx4FY8qWdh7PHj3L2C8NBTMH3GFQK5nGzQk9JvYH": [
+    {
+      collection: mockSolanaNFTs.DeGods,
+      tokenId: "2847",
+      name: "DeGods #2847",
+      image:
+        "https://creator-hub-prod.s3.us-east-2.amazonaws.com/degods_pfp_1656558927467.png",
+      value: 14.5 * 56, // floor price * SOL price
+      attributes: [
+        { trait_type: "Background", value: "Orange" },
+        { trait_type: "Clothing", value: "Turtleneck" },
+        { trait_type: "Skin", value: "Light" },
+      ],
+    },
+    {
+      collection: mockSolanaNFTs.y00ts,
+      tokenId: "1523",
+      name: "y00ts #1523",
+      image:
+        "https://creator-hub-prod.s3.us-east-2.amazonaws.com/y00ts_pfp_1660349505032.gif",
+      value: 8.2 * 56,
+      attributes: [
+        { trait_type: "Background", value: "Blue" },
+        { trait_type: "Clothing", value: "Hoodie" },
+        { trait_type: "Eyes", value: "Sleepy" },
+      ],
+    },
+  ],
+  // Gaming NFTs (acc-19)
+  "7qX8w4E3h9NjKqbYvZHc1R5g6A2sFm9LtKp3Dz8VvYhT": [
+    {
+      collection: mockSolanaNFTs.StarAtlas,
+      tokenId: "starship-001",
+      name: "Pearce C11 Medium Fighter",
+      image:
+        "https://storage.googleapis.com/fractal-launchpad-public-assets/staratlas/Pearce_C11.png",
+      value: 12.3 * 56,
+      attributes: [
+        { trait_type: "Class", value: "Fighter" },
+        { trait_type: "Size", value: "Medium" },
+        { trait_type: "Faction", value: "MUD Territory" },
+      ],
+    },
+    {
+      collection: mockSolanaNFTs.Genopets,
+      tokenId: "2341",
+      name: "Genopets #2341",
+      image:
+        "https://www.arweave.net/7u4xMpJhZaQZS3uKNP8UQ8gLa6Q6W2UQH3W8Q7kZ6y8",
+      value: 3.7 * 56,
+      attributes: [
+        { trait_type: "Type", value: "Fire" },
+        { trait_type: "Stage", value: "Adult" },
+        { trait_type: "Rarity", value: "Rare" },
+      ],
+    },
+  ],
+  // Art NFTs (acc-20)
+  "2bGH7YfxM9Ck5VzBqPw8T6uR3hJd1eN4LpQ7SxZmK9wF": [
+    {
+      collection: mockSolanaNFTs.MadLads,
+      tokenId: "892",
+      name: "Mad Lads #892",
+      image: "https://madlads.s3.us-west-2.amazonaws.com/images/892.png",
+      value: 25.8 * 56,
+      attributes: [
+        { trait_type: "Background", value: "Purple" },
+        { trait_type: "Body", value: "Robot" },
+        { trait_type: "Eyes", value: "Laser" },
+      ],
+    },
+    {
+      collection: mockSolanaNFTs.OkayBears,
+      tokenId: "3456",
+      name: "Okay Bears #3456",
+      image:
+        "https://bafybeihvvuqhdpjpsrxstnyj7rlcvzrjsfywwpuqovbcxdpra5nh6dwyc4.ipfs.dweb.link/3456.png",
+      value: 4.1 * 56,
+      attributes: [
+        { trait_type: "Background", value: "Pink" },
+        { trait_type: "Clothing", value: "Tuxedo" },
+        { trait_type: "Expression", value: "Cool" },
+      ],
+    },
+  ],
+};
+
 export default {
   accounts: mockAccounts,
   accountListItems: mockAccountListItems,
@@ -1629,6 +2109,10 @@ export default {
   assetPerformance: mockAssetPerformance,
   trendAnalysis: mockTrendAnalysis,
   projections: mockProjections,
+  solanaTokens: mockSolanaTokens,
+  solanaNFTs: mockSolanaNFTs,
+  solanaTokenHoldings: mockSolanaTokenHoldings,
+  solanaNFTHoldings: mockSolanaNFTHoldings,
   getHistoricalData,
   getMockNetWorthHistory,
   getMockNetWorthSummary,

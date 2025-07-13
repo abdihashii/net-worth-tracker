@@ -110,7 +110,6 @@ export const subtypeDisplayNames: Record<string, string> = {
 
   // Digital asset subtypes
   bitcoin: 'Bitcoin',
-  ethereum: 'Ethereum',
   nft: 'NFT Collection',
   rwa: 'RWA Tokens',
 
@@ -173,8 +172,6 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
       // Digital assets - specific icons for each type
       case 'bitcoin':
         return Bitcoin
-      case 'ethereum':
-        return Zap // Ethereum's energy/smart contract theme
       case 'nft':
         return Palette // Art/creative theme for NFTs
       case 'rwa':

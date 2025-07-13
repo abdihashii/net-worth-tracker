@@ -172,7 +172,7 @@ function NetWorth() {
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -278,22 +278,21 @@ function NetWorth() {
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+      <Card>
           <CardHeader>
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <CardTitle>Net Worth History</CardTitle>
                 <CardDescription>
                   Track your net worth progression over time
                 </CardDescription>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
                 <Select
                   value={selectedPeriod}
                   onValueChange={setSelectedPeriod}
                 >
-                  <SelectTrigger className="w-32">
+                  <SelectTrigger className="w-full sm:w-32">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -308,7 +307,7 @@ function NetWorth() {
                   value={selectedGranularity}
                   onValueChange={setSelectedGranularity}
                 >
-                  <SelectTrigger className="w-24">
+                  <SelectTrigger className="w-full sm:w-24">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -335,7 +334,10 @@ function NetWorth() {
                 </div>
               </div>
             ) : chartData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start">
+              <ChartContainer
+                config={chartConfig}
+                className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start"
+              >
                 <LineChart
                   data={chartData}
                   margin={{
@@ -404,9 +406,9 @@ function NetWorth() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Net Worth Trends</CardTitle>
+      <Card>
+        <CardHeader>
+          <CardTitle>Net Worth Trends</CardTitle>
             <CardDescription>
               Analysis and insights about your financial growth
             </CardDescription>
@@ -449,7 +451,6 @@ function NetWorth() {
             )}
           </CardContent>
         </Card>
-      </div>
 
       <Card>
         <CardHeader>

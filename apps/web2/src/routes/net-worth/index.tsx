@@ -335,7 +335,7 @@ function NetWorth() {
                 </div>
               </div>
             ) : chartData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-[300px]">
+              <ChartContainer config={chartConfig} className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start">
                 <LineChart
                   data={chartData}
                   margin={{

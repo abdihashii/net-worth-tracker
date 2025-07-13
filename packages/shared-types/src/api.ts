@@ -116,3 +116,53 @@ export interface ApiEndpoint {
   description: string; // Human-readable description
   requiresAuth: boolean; // Whether authentication is required
 }
+
+/** Solana wallet balance information */
+export interface SolanaBalanceInfo {
+  mint: string; // Token mint address (native SOL uses "11111111111111111111111111111111")
+  symbol: string; // Token symbol
+  name: string; // Token name
+  balance: number; // Token balance (already divided by decimals)
+  uiAmount: string; // UI-formatted amount string
+  decimals: number; // Token decimals
+  logoUri?: string; // Token logo URL
+}
+
+/** Solana NFT information */
+export interface SolanaNFTInfo {
+  mint: string; // NFT mint address
+  name: string; // NFT name
+  symbol?: string; // NFT symbol
+  image?: string; // NFT image URL
+  collection?: string; // Collection name
+  floorPrice?: number; // Floor price in SOL
+  lastSale?: number; // Last sale price in SOL
+}
+
+/** Response for Solana wallet balances */
+export interface SolanaWalletBalancesResponse {
+  address: string; // Wallet address
+  network: string; // Solana network
+  solBalance: SolanaBalanceInfo; // SOL balance
+  splTokens: SolanaBalanceInfo[]; // SPL token balances
+  nfts: SolanaNFTInfo[]; // NFT holdings
+  lastUpdated: string; // ISO timestamp of last update
+}
+
+/** Request to refresh Solana wallet balances */
+export interface RefreshSolanaWalletRequest {
+  walletId: string; // Solana wallet ID
+  includeTokens?: boolean; // Include SPL tokens (default: true)
+  includeNFTs?: boolean; // Include NFTs (default: true)
+}
+
+/** Response for Solana wallet refresh operation */
+export interface RefreshSolanaWalletResponse {
+  walletId: string; // Solana wallet ID
+  status: "success" | "partial_success" | "failed";
+  accountsUpdated: number; // Number of accounts updated
+  tokensFound: number; // Number of SPL tokens found
+  nftsFound: number; // Number of NFTs found
+  errorMessage?: string; // Error message if failed
+  lastUpdated: string; // ISO timestamp of update
+}

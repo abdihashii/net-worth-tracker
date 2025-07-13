@@ -1267,19 +1267,100 @@ export function getHistoricalData(
   period: string = "12months",
   granularity: "daily" | "weekly" | "monthly" | "quarterly" = "monthly"
 ) {
-  const periodMap: Record<string, number> = {
-    "3months": 90,
-    "6months": 180,
-    "12months": 365,
-    "24months": 730,
-    "5years": 1825,
-  };
-
-  const days = periodMap[period] || 365;
   const currentDate = getCurrentDate();
-  const startDate = getDaysAgo(days);
+  let startDate: Date;
+  let days: number;
 
-  return generateRealisticHistory(startDate, currentDate, granularity);
+  // Handle dynamic periods
+  switch (period) {
+    case "ytd": {
+      // Year to date: Jan 1 of current year to today
+      startDate = new Date(currentDate.getFullYear(), 0, 1);
+      days = Math.floor(
+        (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      break;
+    }
+    case "thisMonth": {
+      // Current month: First day of current month to today
+      startDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      );
+      days = Math.floor(
+        (currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+      break;
+    }
+    case "lastMonth": {
+      // Previous month: Full previous month
+      const lastMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - 1,
+        1
+      );
+      startDate = lastMonth;
+      const endOfLastMonth = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        0
+      );
+      days =
+        Math.floor(
+          (endOfLastMonth.getTime() - startDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+      break;
+    }
+    case "lastYear": {
+      // Previous year: Full previous year
+      startDate = new Date(currentDate.getFullYear() - 1, 0, 1);
+      const endOfLastYear = new Date(currentDate.getFullYear() - 1, 11, 31);
+      days =
+        Math.floor(
+          (endOfLastYear.getTime() - startDate.getTime()) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+      break;
+    }
+    case "1month":
+    case "30days": {
+      days = 30;
+      startDate = getDaysAgo(days);
+      break;
+    }
+    case "all": {
+      // All available data (3 years for demo)
+      days = 1095; // 3 years
+      startDate = getDaysAgo(days);
+      break;
+    }
+    default: {
+      // Use the existing period map for fixed periods
+      const periodMap: Record<string, number> = {
+        "3months": 90,
+        "6months": 180,
+        "12months": 365,
+        "24months": 730,
+        "5years": 1825,
+      };
+      days = periodMap[period] || 365;
+      startDate = getDaysAgo(days);
+    }
+  }
+
+  // For lastMonth and lastYear, we need to use the appropriate end date
+  const endDate =
+    period === "lastMonth" || period === "lastYear"
+      ? new Date(
+          startDate.getFullYear(),
+          startDate.getMonth() + (period === "lastYear" ? 12 : 1),
+          0
+        )
+      : currentDate;
+
+  return generateRealisticHistory(startDate, endDate, granularity);
 }
 
 /**

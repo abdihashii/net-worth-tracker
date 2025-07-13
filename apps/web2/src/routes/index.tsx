@@ -9,6 +9,7 @@ import {
   WalletIcon,
 } from 'lucide-react'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import { useState } from 'react'
 
 import type { ChartConfig } from '@/components/ui/chart'
 import type {
@@ -33,6 +34,13 @@ import {
 } from '@/components/ui/chart'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   useAccountList,
   useNetWorthHistory,
@@ -62,6 +70,9 @@ const chartConfig = {
 } satisfies ChartConfig
 
 function Dashboard() {
+  // State for time period selection
+  const [timePeriod, setTimePeriod] = useState('12months')
+
   // Fetch data using React Query hooks
   const {
     data: netWorthSummary,
@@ -77,7 +88,7 @@ function Dashboard() {
     data: netWorthHistory,
     isLoading: historyLoading,
     error: historyError,
-  } = useNetWorthHistory()
+  } = useNetWorthHistory(timePeriod)
   const refreshMutation = useRefreshData()
 
   // Handle loading states
@@ -257,10 +268,48 @@ function Dashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Net Worth Trend</CardTitle>
-          <CardDescription>
-            Your net worth over the last 12 months
-          </CardDescription>
+          <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="space-y-1">
+              <CardTitle>Net Worth Trend</CardTitle>
+              <CardDescription>
+                {timePeriod === 'ytd' && 'Your net worth year to date'}
+                {timePeriod === 'thisMonth' && 'Your net worth this month'}
+                {timePeriod === 'lastMonth' && 'Your net worth last month'}
+                {timePeriod === '30days' &&
+                  'Your net worth over the last 30 days'}
+                {timePeriod === '3months' &&
+                  'Your net worth over the last 3 months'}
+                {timePeriod === '6months' &&
+                  'Your net worth over the last 6 months'}
+                {timePeriod === '12months' &&
+                  'Your net worth over the last 12 months'}
+                {timePeriod === '24months' &&
+                  'Your net worth over the last 24 months'}
+                {timePeriod === 'lastYear' && 'Your net worth last year'}
+                {timePeriod === '5years' &&
+                  'Your net worth over the last 5 years'}
+                {timePeriod === 'all' && 'Your complete net worth history'}
+              </CardDescription>
+            </div>
+            <Select value={timePeriod} onValueChange={setTimePeriod}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Select period" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="ytd">Year to Date</SelectItem>
+                <SelectItem value="thisMonth">This Month</SelectItem>
+                <SelectItem value="lastMonth">Last Month</SelectItem>
+                <SelectItem value="30days">Last 30 Days</SelectItem>
+                <SelectItem value="3months">Last 3 Months</SelectItem>
+                <SelectItem value="6months">Last 6 Months</SelectItem>
+                <SelectItem value="12months">Last 12 Months</SelectItem>
+                <SelectItem value="24months">Last 24 Months</SelectItem>
+                <SelectItem value="lastYear">Last Year</SelectItem>
+                <SelectItem value="5years">Last 5 Years</SelectItem>
+                <SelectItem value="all">All Time</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </CardHeader>
         <CardContent>
           {isLoading ? (

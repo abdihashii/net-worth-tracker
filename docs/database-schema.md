@@ -108,7 +108,7 @@ CREATE TRIGGER update_plaid_items_updated_at BEFORE UPDATE ON plaid_items
 Stores both Plaid-connected and manual accounts.
 
 ```sql
-CREATE TYPE account_type AS ENUM ('depository', 'investment', 'loan', 'credit', 'manual_asset', 'manual_liability');
+CREATE TYPE account_type AS ENUM ('depository', 'investment', 'loan', 'credit', 'manual_asset', 'manual_liability', 'solana_wallet');
 CREATE TYPE account_category AS ENUM ('cash', 'investment', 'property', 'vehicle', 'precious_metal', 'digital_asset', 'other');
 
 CREATE TABLE accounts (
@@ -149,7 +149,7 @@ CREATE TRIGGER update_accounts_updated_at BEFORE UPDATE ON accounts
 Tracks historical balance data for all accounts.
 
 ```sql
-CREATE TYPE balance_source AS ENUM ('plaid', 'manual', 'kbb_api');
+CREATE TYPE balance_source AS ENUM ('plaid', 'manual', 'kbb_api', 'solana_rpc');
 
 CREATE TABLE account_balances (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -191,7 +191,36 @@ CREATE TRIGGER update_manual_assets_updated_at BEFORE UPDATE ON manual_assets
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 ```
 
-### 6. Net Worth Snapshots Table
+### 6. Solana Wallets Table
+
+Stores Solana wallet connection details.
+
+```sql
+CREATE TYPE solana_network AS ENUM ('mainnet-beta', 'devnet', 'testnet');
+
+CREATE TABLE solana_wallets (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  account_id UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  address VARCHAR(44) NOT NULL, -- Solana public key (base58 encoded, 32-44 chars)
+  network solana_network NOT NULL DEFAULT 'mainnet-beta',
+  name VARCHAR(255), -- User-friendly name for wallet
+  description TEXT, -- Optional description
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  CONSTRAINT uk_user_address_network UNIQUE (user_id, address, network)
+);
+
+CREATE INDEX idx_solana_wallets_account_id ON solana_wallets(account_id);
+CREATE INDEX idx_solana_wallets_user_id ON solana_wallets(user_id);
+CREATE INDEX idx_solana_wallets_address ON solana_wallets(address);
+
+-- Trigger for updated_at
+CREATE TRIGGER update_solana_wallets_updated_at BEFORE UPDATE ON solana_wallets
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+```
+
+### 7. Net Worth Snapshots Table
 
 Pre-calculated daily snapshots for performance.
 
@@ -212,7 +241,7 @@ CREATE TABLE net_worth_snapshots (
 CREATE INDEX idx_net_worth_snapshots_user_date ON net_worth_snapshots(user_id, date DESC);
 ```
 
-### 7. Data Refresh Logs Table
+### 8. Data Refresh Logs Table
 
 Tracks all data refresh operations.
 
@@ -239,7 +268,7 @@ CREATE INDEX idx_refresh_logs_started_at ON data_refresh_logs(started_at DESC);
 
 ## Support Tables
 
-### 8. Account Types Configuration
+### 9. Account Types Configuration
 
 Defines account type metadata for UI.
 
@@ -276,7 +305,11 @@ INSERT INTO account_type_config (type, subtype, display_name, category, icon, so
 ('manual_asset', 'vehicle', 'Vehicle', 'vehicle', 'car', 41),
 ('manual_asset', 'precious_metal', 'Precious Metal', 'precious_metal', 'coins', 42),
 ('manual_asset', 'crypto', 'Cryptocurrency', 'digital_asset', 'bitcoin', 43),
-('manual_asset', 'other', 'Other Asset', 'other', 'box', 50);
+('manual_asset', 'other', 'Other Asset', 'other', 'box', 50),
+-- Solana wallet assets
+('solana_wallet', 'solana', 'Solana (SOL)', 'digital_asset', 'zap', 60),
+('solana_wallet', 'spl_token', 'SPL Token', 'digital_asset', 'coins', 61),
+('solana_wallet', 'solana_nft', 'Solana NFT', 'digital_asset', 'palette', 62);
 ```
 
 ## TypeScript Data Models
@@ -341,7 +374,8 @@ type AccountType =
   | "loan"
   | "credit"
   | "manual_asset"
-  | "manual_liability";
+  | "manual_liability"
+  | "solana_wallet";
 type AccountCategory =
   | "cash"
   | "investment"
@@ -360,7 +394,7 @@ interface AccountBalance {
   limit?: number;
   date: Date;
   isCurrent: boolean;
-  source: "plaid" | "manual" | "kbb_api";
+  source: "plaid" | "manual" | "kbb_api" | "solana_rpc";
   createdAt: Date;
 }
 
@@ -371,6 +405,19 @@ interface ManualAsset {
   userId: string;
   description: string;
   notes?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Solana wallet connection details
+interface SolanaWallet {
+  id: string;
+  accountId: string;
+  userId: string;
+  address: string;
+  network: "mainnet-beta" | "devnet" | "testnet";
+  name?: string;
+  description?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -476,6 +523,7 @@ LEFT JOIN latest_snapshot s ON u.id = s.user_id;
 ALTER TABLE accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE account_balances ENABLE ROW LEVEL SECURITY;
 ALTER TABLE manual_assets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE solana_wallets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE plaid_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE net_worth_snapshots ENABLE ROW LEVEL SECURITY;
 ALTER TABLE data_refresh_logs ENABLE ROW LEVEL SECURITY;
@@ -500,6 +548,10 @@ CREATE POLICY account_balances_user_policy ON account_balances
 
 -- Manual assets policies
 CREATE POLICY manual_assets_user_policy ON manual_assets
+  FOR ALL USING (user_id = auth.uid());
+
+-- Solana wallets policies
+CREATE POLICY solana_wallets_user_policy ON solana_wallets
   FOR ALL USING (user_id = auth.uid());
 
 -- Plaid items policies

@@ -5,8 +5,6 @@
 import {
   ACCOUNT_CATEGORIES,
   ACCOUNT_TYPES,
-  type AccountCategory,
-  type AccountType,
 } from '@net-worth-tracker/shared-types'
 import {
   Bitcoin,
@@ -31,6 +29,10 @@ import {
   Wallet,
   Zap,
 } from 'lucide-react'
+import type {
+  AccountCategory,
+  AccountType,
+} from '@net-worth-tracker/shared-types'
 
 /**
  * Maps account types to their corresponding categories
@@ -42,6 +44,7 @@ export const accountTypeToCategory: Record<AccountType, AccountCategory> = {
   [ACCOUNT_TYPES.CREDIT]: ACCOUNT_CATEGORIES.OTHER,
   [ACCOUNT_TYPES.MANUAL_ASSET]: ACCOUNT_CATEGORIES.OTHER,
   [ACCOUNT_TYPES.MANUAL_LIABILITY]: ACCOUNT_CATEGORIES.OTHER,
+  [ACCOUNT_TYPES.SOLANA_WALLET]: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
 }
 
 /**
@@ -67,6 +70,7 @@ export const accountTypeDisplayNames: Record<AccountType, string> = {
   [ACCOUNT_TYPES.CREDIT]: 'Credit Card',
   [ACCOUNT_TYPES.MANUAL_ASSET]: 'Manual Asset',
   [ACCOUNT_TYPES.MANUAL_LIABILITY]: 'Manual Liability',
+  [ACCOUNT_TYPES.SOLANA_WALLET]: 'Solana Wallet',
 }
 
 /**
@@ -109,6 +113,11 @@ export const subtypeDisplayNames: Record<string, string> = {
   ethereum: 'Ethereum',
   nft: 'NFT Collection',
   rwa: 'RWA Tokens',
+
+  // Solana wallet subtypes
+  solana: 'Solana (SOL)',
+  spl_token: 'SPL Token',
+  solana_nft: 'Solana NFT',
 
   // Precious metal subtypes
   gold: 'Physical Gold',
@@ -171,6 +180,14 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
       case 'rwa':
         return Globe // Global/tokenized assets theme
 
+      // Solana wallet - specific icons for each type
+      case 'solana':
+        return Zap // Solana's fast/energy theme
+      case 'spl_token':
+        return Coins // SPL tokens
+      case 'solana_nft':
+        return Palette // Solana NFTs
+
       // Precious metals - specific icons for each type
       case 'gold':
         return Coins // Classic gold coins
@@ -206,6 +223,8 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
       return Building
     case ACCOUNT_TYPES.MANUAL_LIABILITY:
       return TrendingDown
+    case ACCOUNT_TYPES.SOLANA_WALLET:
+      return Zap
     default:
       return Box
   }
@@ -284,6 +303,7 @@ export function isAssetAccount(type: AccountType): boolean {
     ACCOUNT_TYPES.DEPOSITORY,
     ACCOUNT_TYPES.INVESTMENT,
     ACCOUNT_TYPES.MANUAL_ASSET,
+    ACCOUNT_TYPES.SOLANA_WALLET,
   ].includes(type as any)
 }
 
@@ -321,8 +341,8 @@ export function getAccountDisplayName(
  */
 export function sortAccountsByCategory<
   T extends { category: AccountCategory; balance: number },
->(accounts: T[]): T[] {
-  const categoryOrder: AccountCategory[] = [
+>(accounts: Array<T>): Array<T> {
+  const categoryOrder: Array<AccountCategory> = [
     ACCOUNT_CATEGORIES.CASH,
     ACCOUNT_CATEGORIES.INVESTMENT,
     ACCOUNT_CATEGORIES.PROPERTY,

@@ -224,6 +224,34 @@ export const mockAccountBalances: AccountBalance[] = [
     source: "manual",
     createdAt: getCurrentDate(),
   },
+  // Solana Wallet - Current Balances
+  {
+    id: "bal-16",
+    accountId: "acc-16",
+    balance: 12000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-17",
+    accountId: "acc-17",
+    balance: 8500,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-18",
+    accountId: "acc-18",
+    balance: 15000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "solana_rpc",
+    createdAt: getCurrentDate(),
+  },
   // One Month Ago Balances
   {
     id: "bal-1-monthly",
@@ -363,6 +391,34 @@ export const mockAccountBalances: AccountBalance[] = [
     date: oneMonthAgo,
     isCurrent: false,
     source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  // Solana Wallet - One Month Ago (higher volatility)
+  {
+    id: "bal-16-monthly",
+    accountId: "acc-16",
+    balance: 10500, // SOL was lower
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-17-monthly",
+    accountId: "acc-17",
+    balance: 7200, // SPL tokens varied
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-18-monthly",
+    accountId: "acc-18",
+    balance: 18000, // NFTs had different values
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "solana_rpc",
     createdAt: oneMonthAgo,
   },
 ];
@@ -697,6 +753,86 @@ export const mockAccounts: Account[] = [
       userId: MOCK_USER_ID,
       description: "Gold & Silver ETFs - GLD, SLV, IAUM",
       notes: "Liquid precious metals exposure, easier to trade",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  // Solana Wallets
+  {
+    id: "acc-16",
+    userId: MOCK_USER_ID,
+    name: "Main Solana Wallet",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "solana",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Phantom Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-16"),
+    solanaWalletDetails: {
+      id: "solana-1",
+      accountId: "acc-16",
+      userId: MOCK_USER_ID,
+      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      network: "mainnet-beta",
+      name: "Main Wallet",
+      description: "Primary Solana wallet with SOL and various tokens",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-17",
+    userId: MOCK_USER_ID,
+    name: "USDC Holdings",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "spl_token",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Phantom Wallet",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-17"),
+    solanaWalletDetails: {
+      id: "solana-2",
+      accountId: "acc-17",
+      userId: MOCK_USER_ID,
+      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      network: "mainnet-beta",
+      name: "USDC Token Account",
+      description: "USD Coin (USDC) SPL token holdings",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-18",
+    userId: MOCK_USER_ID,
+    name: "Solana NFT Collection",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "solana_nft",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: false,
+    isActive: true,
+    institutionName: "Magic Eden",
+    currency: "USD",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-18"),
+    solanaWalletDetails: {
+      id: "solana-3",
+      accountId: "acc-18",
+      userId: MOCK_USER_ID,
+      address: "7B9HMsT9R5oeJfqVKVfAnwPzFWUo8MzLr9Y6k2z9vF3Q",
+      network: "mainnet-beta",
+      name: "NFT Collection",
+      description:
+        "Various Solana NFTs including DeGods, y00ts, and art pieces",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -1252,6 +1388,70 @@ export const getMockAssetPerformance = () => {
         ),
         assetType: "silver",
         benchmark: point.netWorth * 0.98, // Slightly underperforms gold
+      };
+    }),
+    solana: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      12000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const extremeVolatility = rng.normal(0, 0.2); // High volatility for SOL
+      const ecosystemGrowth = Math.cos((index / 12) * 1.5 * Math.PI) * 0.12; // Ecosystem cycles
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + extremeVolatility + ecosystemGrowth)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + extremeVolatility + ecosystemGrowth)
+        ),
+        assetType: "solana",
+        benchmark: point.netWorth * 0.9, // More volatile than BTC
+      };
+    }),
+    splTokens: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      8500
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const tokenVolatility = rng.normal(0, 0.15); // Moderate volatility for SPL tokens
+      const defiCycles = Math.sin((index / 12) * 2.5 * Math.PI) * 0.08;
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + tokenVolatility + defiCycles)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + tokenVolatility + defiCycles)
+        ),
+        assetType: "splTokens",
+        benchmark: point.netWorth * 0.94, // Tracking various SPL token indices
+      };
+    }),
+    solanaNFTs: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      15000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const nftVolatility = rng.normal(0, 0.3); // Extreme volatility for NFTs
+      const hypeCycles = index % 3 === 0 ? 0.25 : 0; // Occasional hype spikes
+
+      return {
+        ...point,
+        netWorth: Math.round(point.netWorth * (1 + nftVolatility + hypeCycles)),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + nftVolatility + hypeCycles)
+        ),
+        assetType: "solanaNFTs",
+        benchmark: point.netWorth * 0.8, // Very speculative asset class
       };
     }),
   };

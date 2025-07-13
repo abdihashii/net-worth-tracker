@@ -46,9 +46,14 @@ export type {
   AccountResponse,
   AccountType,
   AccountTypeConfig,
+  ConnectSolanaWalletRequest,
   CreateAccountRequest,
   ManualAsset,
   ManualAssetResponse,
+  SolanaNFTMetadata,
+  SolanaTokenMetadata,
+  SolanaWallet,
+  SolanaWalletResponse,
   UpdateAccountRequest,
   UpdateBalanceRequest,
 } from "./account";
@@ -92,6 +97,11 @@ export type {
   HealthCheckResponse,
   PaginatedResponse,
   PaginationQuery,
+  RefreshSolanaWalletRequest,
+  RefreshSolanaWalletResponse,
+  SolanaBalanceInfo,
+  SolanaNFTInfo,
+  SolanaWalletBalancesResponse,
   UpdateUserProfileRequest,
   UserProfileQuery,
   ValidationError,
@@ -128,6 +138,7 @@ export const ACCOUNT_TYPES = {
   CREDIT: "credit",
   MANUAL_ASSET: "manual_asset",
   MANUAL_LIABILITY: "manual_liability",
+  SOLANA_WALLET: "solana_wallet",
 } as const;
 
 /** Account category constants for net worth breakdown */
@@ -179,4 +190,19 @@ export const THEMES = {
   LIGHT: "light",
   DARK: "dark",
   SYSTEM: "system",
+} as const;
+
+/** Solana network constants */
+export const SOLANA_NETWORKS = {
+  MAINNET: "mainnet-beta",
+  DEVNET: "devnet",
+  TESTNET: "testnet",
+} as const;
+
+/** Balance source constants */
+export const BALANCE_SOURCES = {
+  PLAID: "plaid",
+  MANUAL: "manual",
+  KBB_API: "kbb_api",
+  SOLANA_RPC: "solana_rpc",
 } as const;

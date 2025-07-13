@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NetWorthIndexRouteImport } from './routes/net-worth/index'
+import { Route as AssetsIndexRouteImport } from './routes/assets/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const NetWorthIndexRoute = NetWorthIndexRouteImport.update({
   path: '/net-worth/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AssetsIndexRoute = AssetsIndexRouteImport.update({
+  id: '/assets/',
+  path: '/assets/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assets': typeof AssetsIndexRoute
   '/net-worth': typeof NetWorthIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/assets': typeof AssetsIndexRoute
   '/net-worth': typeof NetWorthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assets/': typeof AssetsIndexRoute
   '/net-worth/': typeof NetWorthIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/net-worth'
+  fullPaths: '/' | '/assets' | '/net-worth'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/net-worth'
-  id: '__root__' | '/' | '/net-worth/'
+  to: '/' | '/assets' | '/net-worth'
+  id: '__root__' | '/' | '/assets/' | '/net-worth/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssetsIndexRoute: typeof AssetsIndexRoute
   NetWorthIndexRoute: typeof NetWorthIndexRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NetWorthIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/assets/': {
+      id: '/assets/'
+      path: '/assets'
+      fullPath: '/assets'
+      preLoaderRoute: typeof AssetsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssetsIndexRoute: AssetsIndexRoute,
   NetWorthIndexRoute: NetWorthIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -9,7 +9,8 @@ export type AccountType =
   | "loan" // Loan accounts
   | "credit" // Credit card accounts
   | "manual_asset" // Manually added assets
-  | "manual_liability"; // Manually added liabilities
+  | "manual_liability" // Manually added liabilities
+  | "solana_wallet"; // Solana wallet connection
 
 /** Account category for net worth breakdown */
 export type AccountCategory =
@@ -27,6 +28,7 @@ export interface Account {
   userId: string;
   plaidItemId?: string; // Reference to Plaid item if connected
   plaidAccountId?: string; // Plaid's account ID
+  solanaWalletId?: string; // Reference to Solana wallet if connected
   name: string; // User-friendly account name
   officialName?: string; // Official name from institution
   type: AccountType;
@@ -40,6 +42,7 @@ export interface Account {
   currentBalance?: AccountBalance; // Most recent balance
   balanceHistory?: AccountBalance[]; // Historical balance data
   manualAssetDetails?: ManualAsset; // Additional details for manual assets
+  solanaWalletDetails?: SolanaWallet; // Additional details for Solana wallets
   createdAt: Date;
   updatedAt: Date;
 }
@@ -79,6 +82,7 @@ export interface AccountResponse {
   userId: string;
   plaidItemId?: string;
   plaidAccountId?: string;
+  solanaWalletId?: string;
   name: string;
   officialName?: string;
   type: AccountType;
@@ -92,6 +96,7 @@ export interface AccountResponse {
   currentBalance?: AccountBalanceResponse;
   balanceHistory?: AccountBalanceResponse[];
   manualAssetDetails?: ManualAssetResponse;
+  solanaWalletDetails?: SolanaWalletResponse;
   createdAt: string; // ISO timestamp
   updatedAt: string; // ISO timestamp
 }
@@ -105,7 +110,7 @@ export interface AccountBalance {
   limit?: number; // Credit limit (for credit accounts)
   date: Date; // Date of balance
   isCurrent: boolean; // Whether this is the current balance
-  source: "plaid" | "manual" | "kbb_api"; // Source of balance data
+  source: "plaid" | "manual" | "kbb_api" | "solana_rpc"; // Source of balance data
   createdAt: Date;
 }
 
@@ -118,7 +123,7 @@ export interface AccountBalanceResponse {
   limit?: number;
   date: string; // ISO date string
   isCurrent: boolean;
-  source: "plaid" | "manual" | "kbb_api";
+  source: "plaid" | "manual" | "kbb_api" | "solana_rpc";
   createdAt: string; // ISO timestamp
 }
 
@@ -148,4 +153,57 @@ export interface ManualAssetResponse {
 export interface UpdateBalanceRequest {
   balance: number; // New balance value
   date?: string; // Date of balance (defaults to current date)
+}
+
+/** Solana wallet connection details */
+export interface SolanaWallet {
+  id: string;
+  accountId: string;
+  userId: string;
+  address: string; // Solana wallet public address
+  network: "mainnet-beta" | "devnet" | "testnet"; // Solana network
+  name?: string; // User-friendly name for wallet
+  description?: string; // Optional description
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+/** API response format for SolanaWallet (dates as strings) */
+export interface SolanaWalletResponse {
+  id: string;
+  accountId: string;
+  userId: string;
+  address: string;
+  network: "mainnet-beta" | "devnet" | "testnet";
+  name?: string;
+  description?: string;
+  createdAt: string; // ISO timestamp
+  updatedAt: string; // ISO timestamp
+}
+
+/** Request to connect a Solana wallet */
+export interface ConnectSolanaWalletRequest {
+  address: string; // Solana wallet public address
+  network?: "mainnet-beta" | "devnet" | "testnet"; // Defaults to mainnet-beta
+  name?: string; // User-friendly name for wallet
+  description?: string; // Optional description
+}
+
+/** Solana token metadata */
+export interface SolanaTokenMetadata {
+  mint: string; // Token mint address
+  symbol: string; // Token symbol (e.g., "SOL", "USDC")
+  name: string; // Token name
+  decimals: number; // Token decimals
+  logoUri?: string; // Token logo URL
+}
+
+/** Solana NFT metadata */
+export interface SolanaNFTMetadata {
+  mint: string; // NFT mint address
+  name: string; // NFT name
+  symbol?: string; // NFT symbol
+  image?: string; // NFT image URL
+  collection?: string; // Collection name
+  floorPrice?: number; // Floor price in SOL
 }

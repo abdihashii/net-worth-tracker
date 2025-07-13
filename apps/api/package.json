@@ -1,19 +1,19 @@
 {
-  "name": "@net-worth-tracker/api",
-  "version": "0.0.1",
-  "description": "API for net worth tracker",
-  "main": "index.ts",
-  "scripts": {},
-  "keywords": [],
-  "author": "Abdirahman Haji",
-  "license": "ISC",
-  "packageManager": "pnpm@10.12.4",
+  "name": "api",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
   "dependencies": {
+    "@hono/node-server": "^1.15.0",
     "@net-worth-tracker/shared-types": "workspace:*",
-    "hono": "^4.8.4",
-    "plaid": "^36.0.0"
+    "hono": "^4.8.4"
   },
   "devDependencies": {
-    "dotenv": "^17.0.1"
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1",
+    "typescript": "^5.8.3"
   }
 }

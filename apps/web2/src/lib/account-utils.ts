@@ -16,14 +16,20 @@ import {
   Car,
   Coins,
   CreditCard,
+  Gem,
+  Globe,
   Home,
+  Image,
+  Landmark,
   Lock,
+  Palette,
   PiggyBank,
   Shield,
   TrendingDown,
   TrendingUp,
   User,
   Wallet,
+  Zap,
 } from 'lucide-react'
 
 /**
@@ -97,6 +103,17 @@ export const subtypeDisplayNames: Record<string, string> = {
   crypto: 'Cryptocurrency',
   collectible: 'Collectible',
   other: 'Other Asset',
+
+  // Digital asset subtypes
+  bitcoin: 'Bitcoin',
+  ethereum: 'Ethereum',
+  nft: 'NFT Collection',
+  rwa: 'RWA Tokens',
+
+  // Precious metal subtypes
+  gold: 'Physical Gold',
+  silver: 'Silver Bullion',
+  etf: 'Precious Metal ETFs',
 }
 
 /**
@@ -106,12 +123,17 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
   // Check subtype first for more specific icons
   if (subtype) {
     switch (subtype) {
+      // Bank accounts
       case 'checking':
         return Wallet
       case 'savings':
         return PiggyBank
       case 'cd':
         return Lock
+      case 'money_market':
+        return Landmark
+
+      // Investment accounts
       case 'brokerage':
         return TrendingUp
       case '401k':
@@ -121,6 +143,8 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
       case 'ira':
       case 'roth_ira':
         return Shield
+
+      // Credit and loans
       case 'credit_card':
         return CreditCard
       case 'mortgage':
@@ -130,14 +154,39 @@ export function getAccountIcon(type: AccountType, subtype?: string) {
       case 'personal':
       case 'student':
         return User
+
+      // Traditional assets
       case 'real_estate':
         return Home
       case 'vehicle':
         return Car
+
+      // Digital assets - specific icons for each type
+      case 'bitcoin':
+        return Bitcoin
+      case 'ethereum':
+        return Zap // Ethereum's energy/smart contract theme
+      case 'nft':
+        return Palette // Art/creative theme for NFTs
+      case 'rwa':
+        return Globe // Global/tokenized assets theme
+
+      // Precious metals - specific icons for each type
+      case 'gold':
+        return Coins // Classic gold coins
+      case 'silver':
+        return Gem // Precious metal gem
+      case 'etf':
+        return TrendingUp // ETF trading theme
+
+      // Legacy generic types
       case 'precious_metal':
         return Coins
       case 'crypto':
         return Bitcoin
+      case 'collectible':
+        return Image
+
       default:
         break
     }
@@ -176,9 +225,9 @@ export function getCategoryIcon(category: AccountCategory) {
     case ACCOUNT_CATEGORIES.VEHICLE:
       return Car
     case ACCOUNT_CATEGORIES.PRECIOUS_METAL:
-      return Coins
+      return Gem // Better representation of precious metals
     case ACCOUNT_CATEGORIES.DIGITAL_ASSET:
-      return Bitcoin
+      return Zap // More modern/energetic representation of digital assets
     case ACCOUNT_CATEGORIES.OTHER:
     default:
       return Box

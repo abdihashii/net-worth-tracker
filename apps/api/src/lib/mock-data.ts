@@ -20,7 +20,8 @@ export const MOCK_USER_ID = "550e8400-e29b-41d4-a716-446655440000";
 
 // Dynamic date helpers for always-current mock data
 const getCurrentDate = () => new Date();
-const getDaysAgo = (days: number) => new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+const getDaysAgo = (days: number) =>
+  new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 
 // Base dates for realistic data (always relative to current date)
 const oneMonthAgo = getDaysAgo(30);
@@ -39,8 +40,8 @@ class SeededRandom {
 
   // Generate next pseudo-random number between 0 and 1
   next(): number {
-    this.seed = (this.seed * 1664525 + 1013904223) % 2**32;
-    return this.seed / 2**32;
+    this.seed = (this.seed * 1664525 + 1013904223) % 2 ** 32;
+    return this.seed / 2 ** 32;
   }
 
   // Generate random number between min and max
@@ -60,7 +61,7 @@ class SeededRandom {
     const u2 = this.next();
     const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
     const z1 = Math.sqrt(-2 * Math.log(u1)) * Math.sin(2 * Math.PI * u2);
-    
+
     this.spareNormal = z1;
     return z0 * stdDev + mean;
   }
@@ -73,7 +74,8 @@ class SeededRandom {
  */
 function createSeededRandom(date: Date): SeededRandom {
   // Use date components to create a consistent seed
-  const seed = date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
+  const seed =
+    date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
   return new SeededRandom(seed);
 }
 
@@ -157,6 +159,71 @@ export const mockAccountBalances: AccountBalance[] = [
     source: "manual",
     createdAt: getCurrentDate(),
   },
+  // Digital Assets - Current Balances
+  {
+    id: "bal-9",
+    accountId: "acc-9",
+    balance: 25000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-10",
+    accountId: "acc-10",
+    balance: 15000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-11",
+    accountId: "acc-11",
+    balance: 11000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-12",
+    accountId: "acc-12",
+    balance: 16000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  // Precious Metals - Current Balances
+  {
+    id: "bal-13",
+    accountId: "acc-13",
+    balance: 20000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-14",
+    accountId: "acc-14",
+    balance: 8000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
+  {
+    id: "bal-15",
+    accountId: "acc-15",
+    balance: 20000,
+    date: getCurrentDate(),
+    isCurrent: true,
+    source: "manual",
+    createdAt: getCurrentDate(),
+  },
   // One Month Ago Balances
   {
     id: "bal-1-monthly",
@@ -228,6 +295,71 @@ export const mockAccountBalances: AccountBalance[] = [
     id: "bal-8-monthly",
     accountId: "acc-8",
     balance: 28500,
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  // Digital Assets - One Month Ago (higher volatility)
+  {
+    id: "bal-9-monthly",
+    accountId: "acc-9",
+    balance: 22000, // Bitcoin was lower
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-10-monthly",
+    accountId: "acc-10",
+    balance: 13500, // Ethereum was lower
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-11-monthly",
+    accountId: "acc-11",
+    balance: 8000, // NFTs had a surge
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-12-monthly",
+    accountId: "acc-12",
+    balance: 15800, // RWA steady growth
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  // Precious Metals - One Month Ago (stable)
+  {
+    id: "bal-13-monthly",
+    accountId: "acc-13",
+    balance: 19500, // Gold slight appreciation
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-14-monthly",
+    accountId: "acc-14",
+    balance: 7800, // Silver slight appreciation
+    date: oneMonthAgo,
+    isCurrent: false,
+    source: "manual",
+    createdAt: oneMonthAgo,
+  },
+  {
+    id: "bal-15-monthly",
+    accountId: "acc-15",
+    balance: 19600, // PM ETFs tracking spot
     date: oneMonthAgo,
     isCurrent: false,
     source: "manual",
@@ -395,6 +527,176 @@ export const mockAccounts: Account[] = [
       userId: MOCK_USER_ID,
       description: "2022 Toyota Camry LE - 4dr sedan",
       notes: "KBB estimated value for good condition",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  // Digital Assets
+  {
+    id: "acc-9",
+    userId: MOCK_USER_ID,
+    name: "Bitcoin Holdings",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "bitcoin",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: true,
+    isActive: true,
+    institutionName: "Coinbase Pro",
+    currency: "USD",
+    currentBalance: mockAccountBalances[8],
+    manualAssetDetails: {
+      id: "asset-3",
+      accountId: "acc-9",
+      userId: MOCK_USER_ID,
+      description: "Bitcoin (BTC) - 0.58 BTC @ ~$43,000",
+      notes: "Primary cryptocurrency holding, long-term store of value",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-10",
+    userId: MOCK_USER_ID,
+    name: "Ethereum Holdings",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "ethereum",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: true,
+    isActive: true,
+    institutionName: "Coinbase Pro",
+    currency: "USD",
+    currentBalance: mockAccountBalances[9],
+    manualAssetDetails: {
+      id: "asset-4",
+      accountId: "acc-10",
+      userId: MOCK_USER_ID,
+      description: "Ethereum (ETH) - 6.2 ETH @ ~$2,420",
+      notes: "Smart contract platform, DeFi ecosystem exposure",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-11",
+    userId: MOCK_USER_ID,
+    name: "NFT Collection",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "nft",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: true,
+    isActive: true,
+    institutionName: "OpenSea",
+    currency: "USD",
+    currentBalance: mockAccountBalances[10],
+    manualAssetDetails: {
+      id: "asset-5",
+      accountId: "acc-11",
+      userId: MOCK_USER_ID,
+      description: "Digital art & utility NFTs - 8 pieces",
+      notes: "Blue-chip: CryptoPunks, Bored Apes; Utility: Gaming assets",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-12",
+    userId: MOCK_USER_ID,
+    name: "RWA Tokens",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "rwa",
+    category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
+    isManual: true,
+    isActive: true,
+    institutionName: "RealT / Ondo",
+    currency: "USD",
+    currentBalance: mockAccountBalances[11],
+    manualAssetDetails: {
+      id: "asset-6",
+      accountId: "acc-12",
+      userId: MOCK_USER_ID,
+      description: "Real World Asset tokens - Property & Commodities",
+      notes: "Tokenized real estate (60%) + gold-backed tokens (40%)",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  // Precious Metals
+  {
+    id: "acc-13",
+    userId: MOCK_USER_ID,
+    name: "Physical Gold",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "gold",
+    category: ACCOUNT_CATEGORIES.PRECIOUS_METAL,
+    isManual: true,
+    isActive: true,
+    institutionName: "APMEX Vault",
+    currency: "USD",
+    currentBalance: mockAccountBalances[12],
+    manualAssetDetails: {
+      id: "asset-7",
+      accountId: "acc-13",
+      userId: MOCK_USER_ID,
+      description: "Physical gold - coins & bars (~10 oz)",
+      notes: "American Eagles, Canadian Maples, 1oz bars",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-14",
+    userId: MOCK_USER_ID,
+    name: "Silver Bullion",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "silver",
+    category: ACCOUNT_CATEGORIES.PRECIOUS_METAL,
+    isManual: true,
+    isActive: true,
+    institutionName: "Local Coin Shop",
+    currency: "USD",
+    currentBalance: mockAccountBalances[13],
+    manualAssetDetails: {
+      id: "asset-8",
+      accountId: "acc-14",
+      userId: MOCK_USER_ID,
+      description: "Physical silver - mostly coins (~320 oz)",
+      notes: "American Silver Eagles, junk silver quarters",
+      createdAt: oneYearAgo,
+      updatedAt: getCurrentDate(),
+    },
+    createdAt: oneYearAgo,
+    updatedAt: getCurrentDate(),
+  },
+  {
+    id: "acc-15",
+    userId: MOCK_USER_ID,
+    name: "Precious Metal ETFs",
+    type: ACCOUNT_TYPES.MANUAL_ASSET,
+    subtype: "etf",
+    category: ACCOUNT_CATEGORIES.PRECIOUS_METAL,
+    isManual: true,
+    isActive: true,
+    institutionName: "Schwab Brokerage",
+    currency: "USD",
+    currentBalance: mockAccountBalances[14],
+    manualAssetDetails: {
+      id: "asset-9",
+      accountId: "acc-15",
+      userId: MOCK_USER_ID,
+      description: "Gold & Silver ETFs - GLD, SLV, IAUM",
+      notes: "Liquid precious metals exposure, easier to trade",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -609,7 +911,7 @@ function generateRealisticHistory(
   const points = [];
   const totalDuration = endDate.getTime() - startDate.getTime();
   const numPoints = Math.floor(totalDuration / intervalMs);
-  
+
   // Use current totals as target if not specified
   const targetNetWorth = targetEndNetWorth || currentTotals.currentNetWorth;
   const targetAssets = targetNetWorth + currentTotals.totalLiabilities;
@@ -618,11 +920,13 @@ function generateRealisticHistory(
   // Calculate starting values to reach target by end
   const totalGrowthRate = 0.08; // 8% annual growth over the full period
   const periodYears = totalDuration / (365 * msPerDay);
-  const startingNetWorth = targetNetWorth / Math.pow(1 + totalGrowthRate, periodYears);
-  
+  const startingNetWorth =
+    targetNetWorth / Math.pow(1 + totalGrowthRate, periodYears);
+
   // Market simulation parameters
   const volatility = 0.12; // 12% annual volatility
-  const volatilityPerInterval = volatility * Math.sqrt(intervalMs / (365 * msPerDay));
+  const volatilityPerInterval =
+    volatility * Math.sqrt(intervalMs / (365 * msPerDay));
 
   let currentNetWorth = startingNetWorth;
   let currentAssets = startingNetWorth + targetLiabilities;
@@ -631,28 +935,30 @@ function generateRealisticHistory(
   for (let i = 0; i <= numPoints; i++) {
     const date = new Date(startDate.getTime() + i * intervalMs);
     const progress = i / numPoints; // 0 to 1
-    
+
     // Create seeded random generator for this date point
     const rng = createSeededRandom(date);
 
     // Calculate target values for this progress point
-    const targetProgressNetWorth = startingNetWorth * Math.pow(1 + totalGrowthRate, progress * periodYears);
-    
+    const targetProgressNetWorth =
+      startingNetWorth * Math.pow(1 + totalGrowthRate, progress * periodYears);
+
     // Market cycles and seasonality (deterministic)
     const yearProgress = (date.getMonth() + date.getDate() / 30) / 12;
     const marketCycle = Math.sin(yearProgress * 2 * Math.PI) * 0.02; // 2% seasonal variance
     const economicCycle = Math.sin(progress * 4 * Math.PI) * 0.03; // Economic cycles
-    
+
     // Deterministic "random" market movements
     const randomShock = rng.normal(0, volatilityPerInterval * 0.5);
-    
+
     // Smooth progression towards target with variance
     const variance = 1 + marketCycle + economicCycle + randomShock;
     currentNetWorth = targetProgressNetWorth * variance;
 
     // Assets grow with market + contributions
     const contribution = granularity === "monthly" ? 1000 : 0; // Monthly contributions
-    currentAssets = currentNetWorth + currentLiabilities + (contribution * progress);
+    currentAssets =
+      currentNetWorth + currentLiabilities + contribution * progress;
 
     // Liabilities change slightly (deterministic)
     if (granularity === "monthly") {
@@ -706,7 +1012,8 @@ export function getHistoricalData(
 /**
  * Mock historical net worth data for charts (default 12 months, always current)
  */
-export const getMockNetWorthHistory = () => getHistoricalData("12months", "monthly");
+export const getMockNetWorthHistory = () =>
+  getHistoricalData("12months", "monthly");
 
 // Export static version for backwards compatibility
 export const mockNetWorthHistory = getMockNetWorthHistory();
@@ -725,6 +1032,8 @@ const calculateAssetAllocation = () => {
   const realEstate = breakdown.property; // 350,000 (home)
   const vehicles = breakdown.vehicles; // 28,000 (car)
   const retirement = 42500; // IRA portion
+  const digitalAssets = breakdown.digitalAssets; // 67,000 (crypto + NFTs + RWA)
+  const preciousMetals = breakdown.preciousMetals; // 48,000 (gold + silver + ETFs)
 
   return {
     cash: {
@@ -757,6 +1066,16 @@ const calculateAssetAllocation = () => {
       percentage: Math.round((retirement / totalAssets) * 1000) / 10,
       color: "var(--chart-6)",
     },
+    digitalAssets: {
+      value: digitalAssets,
+      percentage: Math.round((digitalAssets / totalAssets) * 1000) / 10,
+      color: "var(--chart-7)",
+    },
+    preciousMetals: {
+      value: preciousMetals,
+      percentage: Math.round((preciousMetals / totalAssets) * 1000) / 10,
+      color: "var(--chart-8)",
+    },
   };
 };
 
@@ -768,36 +1087,173 @@ export const mockAssetAllocation = calculateAssetAllocation();
 export const getMockAssetPerformance = () => {
   const currentDate = getCurrentDate();
   const startDate = getDaysAgo(365);
-  
+
   return {
-    stocks: generateRealisticHistory(startDate, currentDate, "monthly", 68000).map((point) => ({
+    stocks: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      68000
+    ).map((point) => ({
       ...point,
       assetType: "stocks",
       benchmark: point.netWorth * 0.98, // Slightly underperforming S&P 500
     })),
-    bonds: generateRealisticHistory(startDate, currentDate, "monthly", 17000).map((point) => ({
+    bonds: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      17000
+    ).map((point) => ({
       ...point,
       assetType: "bonds",
       benchmark: point.netWorth * 1.01, // Slightly outperforming bond index
     })),
-    realEstate: generateRealisticHistory(startDate, currentDate, "monthly", 350000).map((point) => ({
+    realEstate: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      350000
+    ).map((point) => ({
       ...point,
       assetType: "realEstate",
       benchmark: point.netWorth * 0.97, // Slightly outperforming local market
     })),
-    retirement: generateRealisticHistory(startDate, currentDate, "monthly", 42500).map((point) => ({
+    retirement: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      42500
+    ).map((point) => ({
       ...point,
       assetType: "retirement",
       benchmark: point.netWorth * 0.96, // Conservative retirement portfolio
     })),
     cash: getHistoricalData("12months", "monthly").map((point) => ({
       date: point.date,
-      netWorth: Math.round((37500 / currentTotals.currentNetWorth) * point.netWorth),
-      totalAssets: Math.round((37500 / currentTotals.currentNetWorth) * point.netWorth),
+      netWorth: Math.round(
+        (37500 / currentTotals.currentNetWorth) * point.netWorth
+      ),
+      totalAssets: Math.round(
+        (37500 / currentTotals.currentNetWorth) * point.netWorth
+      ),
       totalLiabilities: 0,
       assetType: "cash",
-      benchmark: Math.round((37500 / currentTotals.currentNetWorth) * point.netWorth), // Cash doesn't have a benchmark
+      benchmark: Math.round(
+        (37500 / currentTotals.currentNetWorth) * point.netWorth
+      ), // Cash doesn't have a benchmark
     })),
+    bitcoin: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      25000
+    ).map((point, index) => {
+      // Bitcoin has higher volatility and different patterns
+      const rng = createSeededRandom(point.date);
+      const extraVolatility = rng.normal(0, 0.15); // Extra 15% volatility for crypto
+      const cryptoWinter = Math.sin((index / 12) * 2 * Math.PI) * 0.1; // Crypto cycles
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + extraVolatility + cryptoWinter)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + extraVolatility + cryptoWinter)
+        ),
+        assetType: "bitcoin",
+        benchmark: point.netWorth * 0.95, // Benchmark vs crypto index
+      };
+    }),
+    ethereum: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      15000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const extraVolatility = rng.normal(0, 0.18); // Even higher volatility for ETH
+      const defiCycle = Math.cos((index / 12) * 3 * Math.PI) * 0.08; // DeFi boom/bust cycles
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + extraVolatility + defiCycle)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + extraVolatility + defiCycle)
+        ),
+        assetType: "ethereum",
+        benchmark: point.netWorth * 0.92, // More volatile than BTC
+      };
+    }),
+    nfts: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      11000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const extremeVolatility = rng.normal(0, 0.25); // Extreme volatility for NFTs
+      const hypeBooms = index % 4 === 0 ? 0.3 : 0; // Occasional hype booms
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + extremeVolatility + hypeBooms)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + extremeVolatility + hypeBooms)
+        ),
+        assetType: "nfts",
+        benchmark: point.netWorth * 0.85, // Very speculative
+      };
+    }),
+    gold: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      20000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const safeHavenFlight = Math.sin((index / 12) * Math.PI) * 0.05; // Flight to safety cycles
+      const inflationHedge = rng.normal(0, 0.08); // Lower volatility, inflation hedge
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + inflationHedge + safeHavenFlight)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + inflationHedge + safeHavenFlight)
+        ),
+        assetType: "gold",
+        benchmark: point.netWorth * 1.02, // Slight outperformance vs inflation
+      };
+    }),
+    silver: generateRealisticHistory(
+      startDate,
+      currentDate,
+      "monthly",
+      8000
+    ).map((point, index) => {
+      const rng = createSeededRandom(point.date);
+      const industrialDemand = Math.cos((index / 12) * 2 * Math.PI) * 0.06; // Industrial cycles
+      const volatility = rng.normal(0, 0.12); // Higher volatility than gold
+
+      return {
+        ...point,
+        netWorth: Math.round(
+          point.netWorth * (1 + volatility + industrialDemand)
+        ),
+        totalAssets: Math.round(
+          point.totalAssets * (1 + volatility + industrialDemand)
+        ),
+        assetType: "silver",
+        benchmark: point.netWorth * 0.98, // Slightly underperforms gold
+      };
+    }),
   };
 };
 
@@ -866,36 +1322,60 @@ export const mockProjections = calculateProjections();
  */
 export function validateDataConsistency() {
   const errors: string[] = [];
-  
+
   // Validate totals match calculations
   const calculatedTotals = calculateCurrentTotals();
   const summaryTotals = mockNetWorthSummary;
-  
-  if (Math.abs(calculatedTotals.currentNetWorth - summaryTotals.currentNetWorth) > 1) {
-    errors.push(`Net worth mismatch: calculated ${calculatedTotals.currentNetWorth}, summary ${summaryTotals.currentNetWorth}`);
+
+  if (
+    Math.abs(calculatedTotals.currentNetWorth - summaryTotals.currentNetWorth) >
+    1
+  ) {
+    errors.push(
+      `Net worth mismatch: calculated ${calculatedTotals.currentNetWorth}, summary ${summaryTotals.currentNetWorth}`
+    );
   }
-  
+
   if (Math.abs(calculatedTotals.totalAssets - summaryTotals.totalAssets) > 1) {
-    errors.push(`Total assets mismatch: calculated ${calculatedTotals.totalAssets}, summary ${summaryTotals.totalAssets}`);
+    errors.push(
+      `Total assets mismatch: calculated ${calculatedTotals.totalAssets}, summary ${summaryTotals.totalAssets}`
+    );
   }
-  
-  if (Math.abs(calculatedTotals.totalLiabilities - summaryTotals.totalLiabilities) > 1) {
-    errors.push(`Total liabilities mismatch: calculated ${calculatedTotals.totalLiabilities}, summary ${summaryTotals.totalLiabilities}`);
+
+  if (
+    Math.abs(
+      calculatedTotals.totalLiabilities - summaryTotals.totalLiabilities
+    ) > 1
+  ) {
+    errors.push(
+      `Total liabilities mismatch: calculated ${calculatedTotals.totalLiabilities}, summary ${summaryTotals.totalLiabilities}`
+    );
   }
-  
+
   // Validate historical data ends with current values
-  const lastHistoricalPoint = mockNetWorthHistory[mockNetWorthHistory.length - 1];
-  if (Math.abs(lastHistoricalPoint.netWorth - summaryTotals.currentNetWorth) > 1000) {
-    errors.push(`Historical data doesn't end at current net worth: ${lastHistoricalPoint.netWorth} vs ${summaryTotals.currentNetWorth}`);
+  const lastHistoricalPoint =
+    mockNetWorthHistory[mockNetWorthHistory.length - 1];
+  if (
+    Math.abs(lastHistoricalPoint.netWorth - summaryTotals.currentNetWorth) >
+    1000
+  ) {
+    errors.push(
+      `Historical data doesn't end at current net worth: ${lastHistoricalPoint.netWorth} vs ${summaryTotals.currentNetWorth}`
+    );
   }
-  
+
   // Validate asset allocation percentages sum to ~100%
   const allocation = mockAssetAllocation;
-  const totalPercentage = Object.values(allocation).reduce((sum, item) => sum + item.percentage, 0);
+  const totalPercentage = Object.values(allocation).reduce(
+    (sum, item) => sum + item.percentage,
+    0
+  );
   if (Math.abs(totalPercentage - 100) > 1) {
-    errors.push(`Asset allocation percentages don't sum to 100%: ${totalPercentage}%`);
+    errors.push(
+      `Asset allocation percentages don't sum to 100%: ${totalPercentage}%`
+    );
   }
-  
+
   return {
     isValid: errors.length === 0,
     errors,
@@ -904,7 +1384,7 @@ export function validateDataConsistency() {
       summaryTotals,
       lastHistoricalPoint,
       totalAllocationPercentage: totalPercentage,
-    }
+    },
   };
 }
 

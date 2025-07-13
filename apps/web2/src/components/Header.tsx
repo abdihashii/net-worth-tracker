@@ -1,7 +1,7 @@
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
+import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
-// import { ModeToggle } from '@/components/layout/theme-toggle'
 
 export default function Header() {
   return (
@@ -14,7 +14,7 @@ export default function Header() {
         />
         <Breadcrumbs />
       </div>
-      {/* <ModeToggle /> */}
+      <ThemeToggle />
     </header>
   )
 }

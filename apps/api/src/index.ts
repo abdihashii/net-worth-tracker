@@ -13,7 +13,8 @@ app.use("*", logger());
 
 // Dashboard
 app.get("/api/dashboard/summary", (c) => {
-  return c.json(mockData.netWorthSummary);
+  // Always return current data with fresh timestamps
+  return c.json(mockData.getMockNetWorthSummary());
 });
 
 app.get("/api/dashboard/cards", (c) => {
@@ -21,7 +22,16 @@ app.get("/api/dashboard/cards", (c) => {
 });
 
 app.get("/api/net-worth/history", (c) => {
-  return c.json(mockData.netWorthHistory);
+  const period = c.req.query("period") || "12months";
+  const granularity = c.req.query("granularity") || "monthly";
+
+  // Use the static getHistoricalData function for consistent data
+  const historicalData = mockData.getHistoricalData(
+    period,
+    granularity as "daily" | "weekly" | "monthly" | "quarterly"
+  );
+
+  return c.json(historicalData);
 });
 
 // Accounts
@@ -39,13 +49,36 @@ app.get("/api/accounts/liabilities/breakdown", (c) => {
 
 // Assets
 app.get("/api/assets/performance", (c) => {
-  const data = mockData.netWorthHistory.map((item) => ({
-    date: item.date,
-    netWorth: item.totalAssets,
-    totalAssets: item.totalAssets,
-    totalLiabilities: 0,
-  }));
-  return c.json(data);
+  const period = c.req.query("period") || "12months";
+  const assetType = c.req.query("type") || "all";
+
+  if (assetType === "all") {
+    const data = mockData
+      .getHistoricalData(period, "monthly")
+      .map((item) => ({
+        date: item.date,
+        netWorth: item.totalAssets,
+        totalAssets: item.totalAssets,
+        totalLiabilities: 0,
+      }));
+    return c.json(data);
+  } else if (
+    mockData.getMockAssetPerformance()[
+      assetType as keyof ReturnType<typeof mockData.getMockAssetPerformance>
+    ]
+  ) {
+    return c.json(
+      mockData.getMockAssetPerformance()[
+        assetType as keyof ReturnType<typeof mockData.getMockAssetPerformance>
+      ]
+    );
+  } else {
+    return c.json([]);
+  }
+});
+
+app.get("/api/assets/allocation", (c) => {
+  return c.json(mockData.assetAllocation);
 });
 app.post("/api/assets/refresh", (c) => {
   return c.json({ success: true, message: "Asset data refresh simulated" });
@@ -77,44 +110,11 @@ app.post("/api/liabilities/refresh", (c) => {
 
 // Net Worth
 app.get("/api/net-worth/trends", (c) => {
-  const trends = {
-    monthlyGrowthRate: 2.5,
-    yearOverYearGrowth: 15.2,
-    volatility: "low",
-    trend: "upward",
-    projectedNetWorth: {
-      sixMonths: 125000,
-      oneYear: 135000,
-      fiveYears: 200000,
-    },
-  };
-  return c.json(trends);
+  return c.json(mockData.trendAnalysis);
 });
+
 app.get("/api/net-worth/projections", (c) => {
-  const projections = {
-    conservative: [
-      { date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), value: 125000 },
-      {
-        date: new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
-        value: 140000,
-      },
-    ],
-    moderate: [
-      { date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), value: 135000 },
-      {
-        date: new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
-        value: 165000,
-      },
-    ],
-    aggressive: [
-      { date: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), value: 150000 },
-      {
-        date: new Date(Date.now() + 2 * 365 * 24 * 60 * 60 * 1000),
-        value: 200000,
-      },
-    ],
-  };
-  return c.json(projections);
+  return c.json(mockData.projections);
 });
 
 // Export
@@ -221,6 +221,12 @@ app.get("/api/settings/notifications", (c) => {
 app.put("/api/settings/notifications", async (c) => {
   const settings = await c.req.json();
   return c.json(settings);
+});
+
+// Data validation endpoint (for development)
+app.get("/api/validate", (c) => {
+  const validation = mockData.validateDataConsistency();
+  return c.json(validation);
 });
 
 const port = 3001;

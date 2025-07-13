@@ -82,8 +82,14 @@ const accounts = {
  * Assets API endpoints
  */
 const assets = {
-  getPerformance: (period: string = '12months'): Promise<NetWorthTrend[]> =>
-    apiFetch(`/assets/performance?period=${period}`),
+  getPerformance: (
+    period: string = '12months',
+    type: string = 'all',
+  ): Promise<NetWorthTrend[]> =>
+    apiFetch(`/assets/performance?period=${period}&type=${type}`),
+  getAllocation: (): Promise<
+    Record<string, { value: number; percentage: number; color: string }>
+  > => apiFetch('/assets/allocation'),
   refreshData: async (): Promise<void> => {
     await fetch(`${API_BASE_URL}/assets/refresh`, { method: 'POST' })
   },

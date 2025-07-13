@@ -10,6 +10,12 @@ import {
 } from 'lucide-react'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
+import type { ChartConfig } from '@/components/ui/chart'
+import type {
+  AccountCategory,
+  AccountListItem,
+  AccountType,
+} from '@net-worth-tracker/shared-types'
 import { QueryErrorFallback } from '@/components/error-boundary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -20,7 +26,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { ChartConfig } from '@/components/ui/chart'
 import {
   ChartContainer,
   ChartTooltip,
@@ -39,11 +44,6 @@ import {
   getAccountIcon,
   sortAccountsByCategory,
 } from '@/lib/account-utils'
-import type {
-  AccountCategory,
-  AccountListItem,
-  AccountType,
-} from '@net-worth-tracker/shared-types'
 
 export const Route = createFileRoute('/')({
   component: Dashboard,
@@ -276,7 +276,10 @@ function Dashboard() {
               </div>
             </div>
           ) : chartData.length > 0 ? (
-            <ChartContainer config={chartConfig} className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start">
+            <ChartContainer
+              config={chartConfig}
+              className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start"
+            >
               <AreaChart
                 data={chartData}
                 margin={{

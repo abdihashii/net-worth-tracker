@@ -29,9 +29,11 @@ const apiFetch = async <T>(endpoint: string): Promise<T> => {
  */
 const dashboard = {
   getSummary: (): Promise<NetWorthSummary> => apiFetch('/dashboard/summary'),
-  getSummaryCards: (): Promise<DashboardSummaryCard[]> =>
+  getSummaryCards: (): Promise<Array<DashboardSummaryCard>> =>
     apiFetch('/dashboard/cards'),
-  getNetWorthHistory: (period: string = '12months'): Promise<NetWorthTrend[]> =>
+  getNetWorthHistory: (
+    period: string = '12months',
+  ): Promise<Array<NetWorthTrend>> =>
     apiFetch(`/net-worth/history?period=${period}`),
   refreshData: async (): Promise<void> => {
     await fetch(`${API_BASE_URL}/refresh`, { method: 'POST' })
@@ -42,7 +44,7 @@ const dashboard = {
  * Accounts API endpoints
  */
 const accounts = {
-  getList: (): Promise<AccountListItem[]> => apiFetch('/accounts'),
+  getList: (): Promise<Array<AccountListItem>> => apiFetch('/accounts'),
   getAssetBreakdown: (): Promise<AssetBreakdown> =>
     apiFetch('/accounts/assets/breakdown'),
   getLiabilityBreakdown: (): Promise<LiabilityBreakdown> =>
@@ -85,7 +87,7 @@ const assets = {
   getPerformance: (
     period: string = '12months',
     type: string = 'all',
-  ): Promise<NetWorthTrend[]> =>
+  ): Promise<Array<NetWorthTrend>> =>
     apiFetch(`/assets/performance?period=${period}&type=${type}`),
   getAllocation: (): Promise<
     Record<string, { value: number; percentage: number; color: string }>
@@ -99,7 +101,7 @@ const assets = {
  * Liabilities API endpoints
  */
 const liabilities = {
-  getPaymentSchedule: (accountId: string): Promise<any[]> =>
+  getPaymentSchedule: (accountId: string): Promise<Array<any>> =>
     apiFetch(`/liabilities/${accountId}/schedule`),
   refreshData: async (): Promise<void> => {
     await fetch(`${API_BASE_URL}/liabilities/refresh`, { method: 'POST' })
@@ -113,7 +115,7 @@ const netWorth = {
   getDetailedHistory: (
     period: string = '12months',
     granularity: string = 'monthly',
-  ): Promise<NetWorthTrend[]> =>
+  ): Promise<Array<NetWorthTrend>> =>
     apiFetch(`/net-worth/history?period=${period}&granularity=${granularity}`),
   getTrends: (): Promise<any> => apiFetch('/net-worth/trends'),
   getProjections: (): Promise<any> => apiFetch('/net-worth/projections'),
@@ -135,7 +137,7 @@ const exportApi = {
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
     return response.blob()
   },
-  getAvailableReports: (): Promise<any[]> => apiFetch('/export/reports'),
+  getAvailableReports: (): Promise<Array<any>> => apiFetch('/export/reports'),
   generateReport: async (reportConfig: any): Promise<any> => {
     const response = await fetch(`${API_BASE_URL}/export/reports/generate`, {
       method: 'POST',

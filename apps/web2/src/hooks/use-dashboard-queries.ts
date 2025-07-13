@@ -107,7 +107,7 @@ export const useNetWorthSummary = () => {
  * Hook to fetch dashboard summary cards
  */
 export const useDashboardCards = () => {
-  return useQuery<DashboardSummaryCard[], Error>({
+  return useQuery<Array<DashboardSummaryCard>, Error>({
     queryKey: dashboardKeys.cards(),
     queryFn: api.dashboard.getSummaryCards,
   })
@@ -117,7 +117,7 @@ export const useDashboardCards = () => {
  * Hook to fetch net worth history for charts
  */
 export const useNetWorthHistory = (period: string = '12months') => {
-  return useQuery<NetWorthTrend[], Error>({
+  return useQuery<Array<NetWorthTrend>, Error>({
     queryKey: dashboardKeys.history(period),
     queryFn: () => api.dashboard.getNetWorthHistory(period),
   })
@@ -127,7 +127,7 @@ export const useNetWorthHistory = (period: string = '12months') => {
  * Hook to fetch all accounts
  */
 export const useAccountList = () => {
-  return useQuery<AccountListItem[], Error>({
+  return useQuery<Array<AccountListItem>, Error>({
     queryKey: accountKeys.list(),
     queryFn: api.accounts.getList,
   })
@@ -274,7 +274,7 @@ export const useDeleteAccount = () => {
  * Hook to fetch asset accounts only
  */
 export const useAssetAccounts = () => {
-  return useQuery<AccountListItem[], Error>({
+  return useQuery<Array<AccountListItem>, Error>({
     queryKey: queryKeys.assets.list(),
     queryFn: async () => {
       const accounts = await api.accounts.getList()
@@ -291,7 +291,7 @@ export const useAssetAccounts = () => {
  * Hook to fetch asset performance over time
  */
 export const useAssetPerformance = (period: string = '12months') => {
-  return useQuery<NetWorthTrend[], Error>({
+  return useQuery<Array<NetWorthTrend>, Error>({
     queryKey: queryKeys.assets.performance(period),
     queryFn: () => api.assets.getPerformance(period),
   })
@@ -305,7 +305,7 @@ export const useAssetPerformance = (period: string = '12months') => {
  * Hook to fetch liability accounts only
  */
 export const useLiabilityAccounts = () => {
-  return useQuery<AccountListItem[], Error>({
+  return useQuery<Array<AccountListItem>, Error>({
     queryKey: queryKeys.liabilities.list(),
     queryFn: async () => {
       const accounts = await api.accounts.getList()
@@ -338,7 +338,7 @@ export const useDetailedNetWorthHistory = (
   period: string = '12months',
   granularity: string = 'monthly',
 ) => {
-  return useQuery<NetWorthTrend[], Error>({
+  return useQuery<Array<NetWorthTrend>, Error>({
     queryKey: queryKeys.netWorth.history(period, granularity),
     queryFn: () => api.netWorth.getDetailedHistory(period, granularity),
   })

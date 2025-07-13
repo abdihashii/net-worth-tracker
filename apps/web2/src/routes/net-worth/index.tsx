@@ -12,6 +12,7 @@ import {
 import { useState } from 'react'
 import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from 'recharts'
 
+import type { ChartConfig } from '@/components/ui/chart'
 import { QueryErrorFallback } from '@/components/error-boundary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
@@ -23,7 +24,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { ChartConfig } from '@/components/ui/chart'
 import {
   ChartContainer,
   ChartTooltip,
@@ -279,178 +279,175 @@ function NetWorth() {
       </div>
 
       <Card>
-          <CardHeader>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <CardTitle>Net Worth History</CardTitle>
-                <CardDescription>
-                  Track your net worth progression over time
-                </CardDescription>
-              </div>
-              <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
-                <Select
-                  value={selectedPeriod}
-                  onValueChange={setSelectedPeriod}
-                >
-                  <SelectTrigger className="w-full sm:w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="3months">3 Months</SelectItem>
-                    <SelectItem value="6months">6 Months</SelectItem>
-                    <SelectItem value="12months">1 Year</SelectItem>
-                    <SelectItem value="24months">2 Years</SelectItem>
-                    <SelectItem value="5years">5 Years</SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select
-                  value={selectedGranularity}
-                  onValueChange={setSelectedGranularity}
-                >
-                  <SelectTrigger className="w-full sm:w-24">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                    <SelectItem value="quarterly">Quarterly</SelectItem>
-                  </SelectContent>
-                </Select>
+        <CardHeader>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <CardTitle>Net Worth History</CardTitle>
+              <CardDescription>
+                Track your net worth progression over time
+              </CardDescription>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-2">
+              <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                <SelectTrigger className="w-full sm:w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3months">3 Months</SelectItem>
+                  <SelectItem value="6months">6 Months</SelectItem>
+                  <SelectItem value="12months">1 Year</SelectItem>
+                  <SelectItem value="24months">2 Years</SelectItem>
+                  <SelectItem value="5years">5 Years</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select
+                value={selectedGranularity}
+                onValueChange={setSelectedGranularity}
+              >
+                <SelectTrigger className="w-full sm:w-24">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="daily">Daily</SelectItem>
+                  <SelectItem value="weekly">Weekly</SelectItem>
+                  <SelectItem value="monthly">Monthly</SelectItem>
+                  <SelectItem value="quarterly">Quarterly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="h-[300px] space-y-4">
+              <div className="flex justify-between items-end h-full">
+                {Array.from({ length: 12 }).map((_, index) => (
+                  <Skeleton
+                    key={`chart-skeleton-${index}`}
+                    className="w-8"
+                    style={{ height: `${Math.random() * 80 + 20}%` }}
+                  />
+                ))}
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            {isLoading ? (
-              <div className="h-[300px] space-y-4">
-                <div className="flex justify-between items-end h-full">
-                  {Array.from({ length: 12 }).map((_, index) => (
-                    <Skeleton
-                      key={`chart-skeleton-${index}`}
-                      className="w-8"
-                      style={{ height: `${Math.random() * 80 + 20}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : chartData.length > 0 ? (
-              <ChartContainer
-                config={chartConfig}
-                className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start"
+          ) : chartData.length > 0 ? (
+            <ChartContainer
+              config={chartConfig}
+              className="h-[300px] w-full [&>div]:!aspect-auto [&>div]:!justify-start"
+            >
+              <LineChart
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                  bottom: 12,
+                }}
               >
-                <LineChart
-                  data={chartData}
-                  margin={{
-                    left: 12,
-                    right: 12,
-                    top: 12,
-                    bottom: 12,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis
-                    dataKey="date"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                  />
-                  <YAxis
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
-                  />
-                  <ChartTooltip
-                    cursor={false}
-                    content={
-                      <ChartTooltipContent
-                        formatter={(value) => formatCurrency(value as number)}
-                      />
-                    }
-                  />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="netWorth"
-                    stroke="var(--color-netWorth)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="assets"
-                    stroke="var(--color-assets)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="liabilities"
-                    stroke="var(--color-liabilities)"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ChartContainer>
-            ) : (
-              <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-                <div className="text-center">
-                  <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>No data available for the selected period</p>
-                  <p className="text-xs mt-2">
-                    Try selecting a different time range
-                  </p>
-                </div>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={
+                    <ChartTooltipContent
+                      formatter={(value) => formatCurrency(value as number)}
+                    />
+                  }
+                />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="netWorth"
+                  stroke="var(--color-netWorth)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="assets"
+                  stroke="var(--color-assets)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="liabilities"
+                  stroke="var(--color-liabilities)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ChartContainer>
+          ) : (
+            <div className="h-[300px] flex items-center justify-center text-muted-foreground">
+              <div className="text-center">
+                <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                <p>No data available for the selected period</p>
+                <p className="text-xs mt-2">
+                  Try selecting a different time range
+                </p>
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
           <CardTitle>Net Worth Trends</CardTitle>
-            <CardDescription>
-              Analysis and insights about your financial growth
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {trendsLoading ? (
-              <div className="space-y-4">
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-3/4" />
-                <Skeleton className="h-4 w-1/2" />
+          <CardDescription>
+            Analysis and insights about your financial growth
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {trendsLoading ? (
+            <div className="space-y-4">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-green-600" />
+                <span className="text-sm font-medium">
+                  Average monthly growth: 2.5%
+                </span>
               </div>
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-green-600" />
-                  <span className="text-sm font-medium">
-                    Average monthly growth: 2.5%
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm font-medium">
-                    Best performing month: March 2024
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm font-medium">
-                    Tracking since: January 2023
-                  </span>
-                </div>
-                <div className="pt-4 border-t">
-                  <p className="text-sm text-muted-foreground">
-                    Your net worth has shown consistent growth over the past 12
-                    months, with particularly strong performance in your
-                    investment accounts.
-                  </p>
-                </div>
+              <div className="flex items-center gap-2">
+                <Target className="h-4 w-4 text-blue-600" />
+                <span className="text-sm font-medium">
+                  Best performing month: March 2024
+                </span>
               </div>
-            )}
-          </CardContent>
-        </Card>
+              <div className="flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm font-medium">
+                  Tracking since: January 2023
+                </span>
+              </div>
+              <div className="pt-4 border-t">
+                <p className="text-sm text-muted-foreground">
+                  Your net worth has shown consistent growth over the past 12
+                  months, with particularly strong performance in your
+                  investment accounts.
+                </p>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

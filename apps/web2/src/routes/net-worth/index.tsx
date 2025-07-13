@@ -10,6 +10,7 @@ import {
   Wallet,
 } from 'lucide-react'
 import { useState } from 'react'
+import { CartesianGrid, Legend, Line, LineChart, XAxis, YAxis } from 'recharts'
 
 import { QueryErrorFallback } from '@/components/error-boundary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -22,6 +23,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import type { ChartConfig } from '@/components/ui/chart'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
 import {
   Select,
   SelectContent,
@@ -46,6 +53,22 @@ export const Route = createFileRoute('/net-worth/')({
   }),
   errorComponent: QueryErrorFallback,
 })
+
+// Chart configuration
+const chartConfig = {
+  netWorth: {
+    label: 'Net Worth',
+    color: 'var(--chart-1)',
+  },
+  assets: {
+    label: 'Assets',
+    color: 'var(--chart-2)',
+  },
+  liabilities: {
+    label: 'Liabilities',
+    color: 'var(--chart-3)',
+  },
+} satisfies ChartConfig
 
 function NetWorth() {
   const [selectedPeriod, setSelectedPeriod] = useState('12months')
@@ -85,6 +108,21 @@ function NetWorth() {
   const lastUpdated = netWorthSummary?.lastUpdated
     ? new Date(netWorthSummary.lastUpdated).toLocaleString()
     : 'Never'
+
+  // Prepare chart data
+  const chartData =
+    netWorthHistory?.map((item) => ({
+      date: new Date(item.date).toLocaleDateString('en-US', {
+        month: 'short',
+        year:
+          selectedPeriod !== '3months' && selectedPeriod !== '6months'
+            ? '2-digit'
+            : undefined,
+      }),
+      netWorth: item.netWorth,
+      assets: item.totalAssets,
+      liabilities: item.totalLiabilities,
+    })) || []
 
   if (error && !isLoading) {
     return (
@@ -296,15 +334,69 @@ function NetWorth() {
                   ))}
                 </div>
               </div>
+            ) : chartData.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-[300px]">
+                <LineChart
+                  data={chartData}
+                  margin={{
+                    left: 12,
+                    right: 12,
+                    top: 12,
+                    bottom: 12,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis
+                    dataKey="date"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                  />
+                  <YAxis
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                  />
+                  <ChartTooltip
+                    cursor={false}
+                    content={
+                      <ChartTooltipContent
+                        formatter={(value) => formatCurrency(value as number)}
+                      />
+                    }
+                  />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey="netWorth"
+                    stroke="var(--color-netWorth)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="assets"
+                    stroke="var(--color-assets)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="liabilities"
+                    stroke="var(--color-liabilities)"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                </LineChart>
+              </ChartContainer>
             ) : (
               <div className="h-[300px] flex items-center justify-center text-muted-foreground">
                 <div className="text-center">
                   <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                  <p>Net Worth History Chart</p>
-                  <p className="text-sm">Will be implemented with Recharts</p>
+                  <p>No data available for the selected period</p>
                   <p className="text-xs mt-2">
-                    Period: {selectedPeriod} | Granularity:{' '}
-                    {selectedGranularity}
+                    Try selecting a different time range
                   </p>
                 </div>
               </div>

@@ -8,6 +8,7 @@ import {
   TrendingUpIcon,
   WalletIcon,
 } from 'lucide-react'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import { QueryErrorFallback } from '@/components/error-boundary'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -19,10 +20,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import type { ChartConfig } from '@/components/ui/chart'
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
 import { Progress } from '@/components/ui/progress'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   useAccountList,
+  useNetWorthHistory,
   useNetWorthSummary,
   useRefreshData,
 } from '@/hooks/use-dashboard-queries'
@@ -45,6 +53,14 @@ export const Route = createFileRoute('/')({
   errorComponent: QueryErrorFallback,
 })
 
+// Chart configuration
+const chartConfig = {
+  netWorth: {
+    label: 'Net Worth',
+    color: 'var(--chart-1)',
+  },
+} satisfies ChartConfig
+
 function Dashboard() {
   // Fetch data using React Query hooks
   const {
@@ -57,11 +73,16 @@ function Dashboard() {
     isLoading: accountsLoading,
     error: accountsError,
   } = useAccountList()
+  const {
+    data: netWorthHistory,
+    isLoading: historyLoading,
+    error: historyError,
+  } = useNetWorthHistory()
   const refreshMutation = useRefreshData()
 
   // Handle loading states
-  const isLoading = summaryLoading || accountsLoading
-  const error = summaryError || accountsError
+  const isLoading = summaryLoading || accountsLoading || historyLoading
+  const error = summaryError || accountsError || historyError
 
   // Sort accounts by category for better display - convert to proper format first
   const accountsWithTypedCategories =
@@ -70,6 +91,16 @@ function Dashboard() {
       category: item.category as AccountCategory,
     })) || []
   const sortedAccounts = sortAccountsByCategory(accountsWithTypedCategories)
+
+  // Prepare chart data
+  const chartData =
+    netWorthHistory?.map((item) => ({
+      date: new Date(item.date).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      }),
+      netWorth: item.netWorth,
+    })) || []
 
   // Calculate display values with safe defaults
   const netWorth = netWorthSummary?.currentNetWorth || 0
@@ -244,9 +275,73 @@ function Dashboard() {
                 ))}
               </div>
             </div>
+          ) : chartData.length > 0 ? (
+            <ChartContainer config={chartConfig} className="h-[300px]">
+              <AreaChart
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                  top: 12,
+                  bottom: 12,
+                }}
+              >
+                <defs>
+                  <linearGradient
+                    id="colorNetWorth"
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    <stop
+                      offset="5%"
+                      stopColor="var(--color-netWorth)"
+                      stopOpacity={0.8}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor="var(--color-netWorth)"
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <XAxis
+                  dataKey="date"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => value}
+                />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={
+                    <ChartTooltipContent
+                      hideLabel
+                      formatter={(value) => formatCurrency(value as number)}
+                    />
+                  }
+                />
+                <Area
+                  type="monotone"
+                  dataKey="netWorth"
+                  stroke="var(--color-netWorth)"
+                  fillOpacity={1}
+                  fill="url(#colorNetWorth)"
+                  strokeWidth={2}
+                />
+              </AreaChart>
+            </ChartContainer>
           ) : (
             <div className="h-[300px] flex items-center justify-center text-muted-foreground">
-              Chart will be implemented with Recharts
+              No data available for the selected period
             </div>
           )}
         </CardContent>

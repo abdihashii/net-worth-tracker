@@ -175,7 +175,7 @@ export const mockAccountBalances: AccountBalance[] = [
     balance: 16000,
     date: getCurrentDate(),
     isCurrent: true,
-    source: "manual",
+    source: "solana_rpc",
     createdAt: getCurrentDate(),
   },
   // Precious Metals - Current Balances
@@ -371,7 +371,7 @@ export const mockAccountBalances: AccountBalance[] = [
     balance: 15800, // RWA steady growth
     date: oneMonthAgo,
     isCurrent: false,
-    source: "manual",
+    source: "solana_rpc",
     createdAt: oneMonthAgo,
   },
   // Precious Metals - One Month Ago (stable)
@@ -672,20 +672,22 @@ export const mockAccounts: Account[] = [
     id: "acc-12",
     userId: MOCK_USER_ID,
     name: "RWA Tokens",
-    type: ACCOUNT_TYPES.MANUAL_ASSET,
-    subtype: "rwa",
+    type: ACCOUNT_TYPES.SOLANA_WALLET,
+    subtype: "spl_token",
     category: ACCOUNT_CATEGORIES.DIGITAL_ASSET,
-    isManual: true,
+    isManual: false,
     isActive: true,
-    institutionName: "RealT / Ondo",
+    institutionName: "Connected Wallet",
     currency: "USD",
-    currentBalance: mockAccountBalances[9],
-    manualAssetDetails: {
-      id: "asset-6",
+    currentBalance: mockAccountBalances.find((bal) => bal.id === "bal-12"),
+    solanaWalletDetails: {
+      id: "solana-9",
       accountId: "acc-12",
       userId: MOCK_USER_ID,
-      description: "Real World Asset tokens - Property & Commodities",
-      notes: "Tokenized real estate (60%) + gold-backed tokens (40%)",
+      address: "5RWAtoken7H9Yk2LfN6xRbQ3w1Z8vT2qM9KdU3cHp4XjV",
+      network: "mainnet-beta",
+      name: "RWA Token Portfolio",
+      description: "Real World Asset SPL tokens: RealT, ONDO, commodities",
       createdAt: oneYearAgo,
       updatedAt: getCurrentDate(),
     },
@@ -1898,6 +1900,34 @@ export const mockSolanaTokens = {
     currentPrice: 0.0034,
     priceChange24h: -1.2,
   },
+  // Real World Assets (RWA)
+  REALT: {
+    mint: "ReALT7kKz2LfN6xPvQ8E3bT9qMKjCUsXm3VYNtHs9wF",
+    symbol: "REALT",
+    name: "RealT Token",
+    decimals: 6,
+    logoUri: "https://realt.co/images/realt-token-logo.png",
+    currentPrice: 1.02,
+    priceChange24h: 0.5,
+  },
+  ONDO: {
+    mint: "OnDo5rKz7LfN6xPvQ8E3bT9qMKjCUsXm3VYNtHs9wF",
+    symbol: "ONDO",
+    name: "Ondo Finance",
+    decimals: 6,
+    logoUri: "https://ondo.finance/images/ondo-logo.png",
+    currentPrice: 0.95,
+    priceChange24h: 1.2,
+  },
+  GOLD: {
+    mint: "GoLD7kKz2LfN6xPvQ8E3bT9qMKjCUsXm3VYNtHs9wF",
+    symbol: "GOLD",
+    name: "Tokenized Gold",
+    decimals: 8,
+    logoUri: "https://paxos.com/images/paxg-logo.png",
+    currentPrice: 2045.5,
+    priceChange24h: -0.3,
+  },
 };
 
 /**
@@ -2002,6 +2032,12 @@ export const mockSolanaTokenHoldings = {
     { token: mockSolanaTokens.USDT, amount: 8000, value: 7992 },
     { token: mockSolanaTokens.ATLAS, amount: 1000000, value: 3400 },
     { token: mockSolanaTokens.JUP, amount: 2000, value: 1560 },
+  ],
+  // RWA Token Portfolio (acc-12)
+  "5RWAtoken7H9Yk2LfN6xRbQ3w1Z8vT2qM9KdU3cHp4XjV": [
+    { token: mockSolanaTokens.REALT, amount: 9800, value: 9996 }, // ~60% real estate
+    { token: mockSolanaTokens.ONDO, amount: 4200, value: 3990 }, // ~25% structured products
+    { token: mockSolanaTokens.GOLD, amount: 1, value: 2045 }, // ~15% tokenized gold
   ],
 };
 

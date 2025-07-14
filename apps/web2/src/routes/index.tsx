@@ -103,14 +103,29 @@ function Dashboard() {
     })) || []
   const sortedAccounts = sortAccountsByCategory(accountsWithTypedCategories)
 
+  // Conditionally format chart data date based on the selected time period
+  const longPeriods = new Set([
+    '12months',
+    '24months',
+    '5years',
+    'all',
+    'lastYear',
+    'ytd',
+  ])
+  const showYear = longPeriods.has(timePeriod)
+
+  const dateFormatOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    ...(showYear && { year: 'numeric' }),
+  }
+
   // Prepare chart data
   const chartData =
     netWorthHistory?.map((item) => ({
-      date: new Date(item.date).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      }),
+      date: new Date(item.date).toLocaleDateString('en-US', dateFormatOptions),
       netWorth: item.netWorth,
+      fullDate: new Date(item.date),
     })) || []
 
   // Calculate display values with safe defaults
@@ -364,7 +379,14 @@ function Dashboard() {
                   tickLine={false}
                   axisLine={false}
                   tickMargin={8}
-                  tickFormatter={(value) => value}
+                  tickFormatter={(value, index) => {
+                    if (chartData.length === 0) return ''
+                    // Show fewer ticks for longer periods to avoid clutter
+                    const pointsToShow = timePeriod === 'all' ? 6 : 12
+                    const nth = Math.ceil(chartData.length / pointsToShow)
+                    if (index % nth !== 0) return ''
+                    return value
+                  }}
                 />
                 <YAxis
                   tickLine={false}
@@ -376,8 +398,19 @@ function Dashboard() {
                   cursor={false}
                   content={
                     <ChartTooltipContent
-                      hideLabel
                       formatter={(value) => formatCurrency(value as number)}
+                      labelFormatter={(label, payload) => {
+                        if (payload?.[0]?.payload?.fullDate) {
+                          return new Date(
+                            payload[0].payload.fullDate,
+                          ).toLocaleDateString('en-US', {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                          })
+                        }
+                        return label
+                      }}
                     />
                   }
                 />

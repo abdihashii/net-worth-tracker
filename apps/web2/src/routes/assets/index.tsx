@@ -118,14 +118,22 @@ function Assets() {
     firstValue > 0 ? ((lastValue - firstValue) / firstValue) * 100 : 0
   const performanceChangeAmount = lastValue - firstValue
 
+  // Conditionally format chart data date based on the selected time period
+  const longPeriods = new Set(['12months', '24months', '5years'])
+  const showYear = longPeriods.has(timePeriod)
+
+  const dateFormatOptions: Intl.DateTimeFormatOptions = {
+    month: 'short',
+    day: 'numeric',
+    ...(showYear && { year: 'numeric' }),
+  }
+
   // Prepare chart data
   const performanceChartData =
     assetPerformance?.map((item) => ({
-      date: new Date(item.date).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      }),
+      date: new Date(item.date).toLocaleDateString('en-US', dateFormatOptions),
       value: item.netWorth,
+      fullDate: new Date(item.date),
     })) || []
 
   // Prepare allocation chart data
@@ -392,6 +400,16 @@ function Assets() {
                     tickLine={false}
                     axisLine={false}
                     tickMargin={8}
+                    tickFormatter={(value, index) => {
+                      if (performanceChartData.length === 0) return ''
+                      // Show fewer ticks for longer periods to avoid clutter
+                      const pointsToShow = 12
+                      const nth = Math.ceil(
+                        performanceChartData.length / pointsToShow,
+                      )
+                      if (index % nth !== 0) return ''
+                      return value
+                    }}
                   />
                   <YAxis
                     tickLine={false}
@@ -403,8 +421,19 @@ function Assets() {
                     cursor={false}
                     content={
                       <ChartTooltipContent
-                        hideLabel
                         formatter={(value) => formatCurrency(value as number)}
+                        labelFormatter={(label, payload) => {
+                          if (payload?.[0]?.payload?.fullDate) {
+                            return new Date(
+                              payload[0].payload.fullDate,
+                            ).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })
+                          }
+                          return label
+                        }}
                       />
                     }
                   />

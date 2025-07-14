@@ -1351,8 +1351,8 @@ export function getHistoricalData(
       break;
     }
     case "all": {
-      // All available data (3 years for demo)
-      days = 1095; // 3 years
+      // All available data (5 years for demo)
+      days = 1825; // 5 years
       startDate = getDaysAgo(days);
       break;
     }

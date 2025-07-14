@@ -1197,7 +1197,7 @@ function generateRealisticHistory(
     targetNetWorth / Math.pow(1 + totalGrowthRate, periodYears);
 
   // Market simulation parameters
-  const volatility = 0.12; // 12% annual volatility
+  const volatility = 0.18; // Increased from 0.12 for more realistic swings
   const volatilityPerInterval =
     volatility * Math.sqrt(intervalMs / (365 * msPerDay));
 
@@ -1216,13 +1216,31 @@ function generateRealisticHistory(
     const targetProgressNetWorth =
       startingNetWorth * Math.pow(1 + totalGrowthRate, progress * periodYears);
 
-    // Market cycles and seasonality (deterministic)
+    // More realistic market cycles with sharper downturns
     const yearProgress = (date.getMonth() + date.getDate() / 30) / 12;
-    const marketCycle = Math.sin(yearProgress * 2 * Math.PI) * 0.02; // 2% seasonal variance
-    const economicCycle = Math.sin(progress * 4 * Math.PI) * 0.03; // Economic cycles
+    const marketCycle = Math.sin(yearProgress * 2 * Math.PI) * 0.03; // Slightly increased seasonality
+    const longWave = Math.cos(progress * 2 * Math.PI) * 0.08; // More pronounced long-term cycle
+    const shortWave = Math.sin(progress * 10 * Math.PI) * 0.05; // More pronounced short-term volatility
+
+    // Deterministic "market shock" events for added realism
+    let marketShock = 0;
+    if (granularity !== "daily") {
+      // A sharp dip and recovery around the 1/3 mark
+      const shock1Progress = (progress - 0.3) / 0.15;
+      if (shock1Progress > 0 && shock1Progress < 1) {
+        marketShock -= 0.2 * Math.sin(shock1Progress * Math.PI); // 20% dip
+      }
+      // A smaller dip and recovery in the last quarter
+      const shock2Progress = (progress - 0.75) / 0.1;
+      if (shock2Progress > 0 && shock2Progress < 1) {
+        marketShock -= 0.12 * Math.sin(shock2Progress * Math.PI); // 12% dip
+      }
+    }
+
+    const economicCycle = longWave + shortWave + marketShock;
 
     // Deterministic "random" market movements
-    const randomShock = rng.normal(0, volatilityPerInterval * 0.5);
+    const randomShock = rng.normal(0, volatilityPerInterval * 0.75); // Increased random factor
 
     // Smooth progression towards target with variance
     const variance = 1 + marketCycle + economicCycle + randomShock;
@@ -1233,11 +1251,13 @@ function generateRealisticHistory(
     currentAssets =
       currentNetWorth + currentLiabilities + contribution * progress;
 
-    // Liabilities change slightly (deterministic)
+    // More dynamic liability changes
     if (granularity === "monthly") {
-      currentLiabilities *= 0.9995; // Very slight decrease from loan payments
-      currentLiabilities += rng.range(-100, 100); // Small credit card fluctuations
-      currentLiabilities = Math.max(15000, Math.min(20000, currentLiabilities));
+      const liabilityTrend = Math.sin(progress * 2 * Math.PI); // Liabilities can fluctuate
+      const randomChange = rng.range(-250, 250);
+      currentLiabilities *= 1 + liabilityTrend * 0.005; // Fluctuate +/- 0.5%
+      currentLiabilities += randomChange;
+      currentLiabilities = Math.max(12000, Math.min(25000, currentLiabilities)); // Wider range
     }
 
     // Ensure the last point exactly matches our targets

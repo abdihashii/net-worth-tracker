@@ -279,7 +279,7 @@ export const useAssetAccounts = () => {
     queryFn: async () => {
       const accounts = await api.accounts.getList()
       return accounts.filter((account) =>
-        ['investment', 'checking', 'savings', 'retirement'].includes(
+        ['depository', 'investment', 'manual_asset', 'solana_wallet'].includes(
           account.type,
         ),
       )

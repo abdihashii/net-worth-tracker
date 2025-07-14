@@ -1196,14 +1196,17 @@ function generateRealisticHistory(
   const startingNetWorth =
     targetNetWorth / Math.pow(1 + totalGrowthRate, periodYears);
 
+  // Calculate a higher starting liability to simulate loan paydown
+  const startingLiabilities = targetLiabilities + periodYears * 3000; // Assume ~$3k/yr loan paydown
+
   // Market simulation parameters
   const volatility = 0.18; // Increased from 0.12 for more realistic swings
   const volatilityPerInterval =
     volatility * Math.sqrt(intervalMs / (365 * msPerDay));
 
   let currentNetWorth = startingNetWorth;
-  let currentAssets = startingNetWorth + targetLiabilities;
-  let currentLiabilities = targetLiabilities;
+  let currentAssets = startingNetWorth + startingLiabilities;
+  let currentLiabilities = startingLiabilities;
 
   for (let i = 0; i <= numPoints; i++) {
     const date = new Date(startDate.getTime() + i * intervalMs);
@@ -1251,14 +1254,13 @@ function generateRealisticHistory(
     currentAssets =
       currentNetWorth + currentLiabilities + contribution * progress;
 
-    // More dynamic liability changes
-    if (granularity === "monthly") {
-      const liabilityTrend = Math.sin(progress * 2 * Math.PI); // Liabilities can fluctuate
-      const randomChange = rng.range(-250, 250);
-      currentLiabilities *= 1 + liabilityTrend * 0.005; // Fluctuate +/- 0.5%
-      currentLiabilities += randomChange;
-      currentLiabilities = Math.max(12000, Math.min(25000, currentLiabilities)); // Wider range
-    }
+    // Simulate realistic liability changes over time
+    // Base liability trends down from starting to target value
+    const baseLiability =
+      startingLiabilities -
+      (startingLiabilities - targetLiabilities) * progress;
+    // Add fluctuation for credit card usage
+    currentLiabilities = baseLiability + rng.range(-1500, 1500);
 
     // Ensure the last point exactly matches our targets
     if (i === numPoints) {
